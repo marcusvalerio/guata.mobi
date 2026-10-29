@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
-import { Road } from "@/components/Road";
+import { Trilhas } from "@/components/Trilhas";
 import s from "./landing.module.css";
 
 const DIMENSOES = [
@@ -18,6 +18,15 @@ const CAMADAS = [
   ["Processamento e análise", "Estimativa de tempo por condição (clima, dia, período) e detecção de anomalias."],
   ["Visualização", "Painel ao vivo para gestão, tela de operação e telão público no terminal."],
   ["Governança", "Formulário anônimo, filtro de respostas fora da faixa, perfis de acesso e trilha de conformidade com a LGPD."],
+];
+
+const PROXIMOS = [
+  ["Login por cargo", "Cada pessoa entra com o próprio e-mail; o cargo define o que vê. Base para auditoria das decisões."],
+  ["GTFS do MOBNIT", "Itinerários e quadros horários oficiais: pontualidade passa a comparar o programado com o realizado."],
+  ["Bilhetagem e sensores", "Validações por linha e contagem automática nas entradas alimentam a dimensão Demanda sem digitação."],
+  ["Gêmeo Digital e NitTrans", "Camadas territoriais e contagens volumétricas para ler o terminal dentro da malha viária da cidade."],
+  ["Relatório para a gestão", "PDF semanal e mensal com as seis dimensões, pronto para reunião e para evidência na pesquisa."],
+  ["Registro de decisões", "O gestor anota o ajuste feito; o painel mostra se o índice da linha melhorou depois dele."],
 ];
 
 const CENARIOS = [
@@ -43,33 +52,37 @@ export default function Home() {
         </div>
       </header>
 
-      <section className={`wrap ${s.hero}`}>
-        <p className="eyebrow">Terminal Rodoviário Presidente João Goulart · Niterói, RJ</p>
-        <h1 className={s.h1}>
-          O terminal medido<br />por quem passa por ele.
-        </h1>
-        <div className={s.heroRow}>
-          <p className={s.lead}>
-            O Guatá transforma relatos de passageiros, registros da operação e dados da cidade em seis
-            indicadores ao vivo e numa previsão de tempo de viagem para o dia seguinte. A gestão ajusta
-            horários, intervalos e frota antes da fila se formar, não depois.
-          </p>
-          <div className={s.ctas}>
-            <Link href="/painel" className="btn">Ver painel ao vivo</Link>
-            <Link href="/r" className="btn ghost">Responder a pesquisa</Link>
+      <section className={s.noite}>
+        <Trilhas />
+        <div className={`wrap ${s.hero}`}>
+          <p className={s.k}>Terminal Rodoviário Presidente João Goulart · Niterói, RJ</p>
+          <h1 className={s.h1}>
+            O terminal medido<br />por quem <em>passa</em> por ele.
+          </h1>
+          <div className={s.heroRow}>
+            <p className={s.lead}>
+              O Guatá transforma relatos de passageiros, registros da operação e dados da cidade em seis
+              indicadores ao vivo e numa previsão de tempo de viagem para o dia seguinte. A gestão ajusta
+              horários, intervalos e frota antes da fila se formar, não depois.
+            </p>
+            <div className={s.ctas}>
+              <Link href="/painel" className="btn signal">Ver painel ao vivo</Link>
+              <Link href="/r" className={`btn ghost ${s.ghostNoite}`}>Responder a pesquisa</Link>
+            </div>
           </div>
         </div>
-        <Road />
-        <div className={s.board}>
-          {CENARIOS.map(([c, m, d]) => (
-            <div key={c} className={s.boardCell}>
-              <span className="eyebrow">{c}</span>
-              <span className={`num ${s.boardNum}`}>{m}<small>min</small></span>
-              <span className={s.boardSub}>{d}</span>
-            </div>
-          ))}
+        <div className={`wrap ${s.boardWrap}`}>
+          <div className={s.board}>
+            {CENARIOS.map(([c, m, d]) => (
+              <div key={c} className={s.boardCell}>
+                <span className="eyebrow">{c}</span>
+                <span className={`num ${s.boardNum}`}>{m}<small>min</small></span>
+                <span className={s.boardSub}>{d}</span>
+              </div>
+            ))}
+          </div>
+          <p className={s.note}>Trajeto de exemplo. No painel, cada resposta registrada recalcula esses tempos.</p>
         </div>
-        <p className={s.note}>Trajeto de exemplo. Os valores do painel são recalculados com cada resposta registrada.</p>
       </section>
 
       <section id="estudo" className={s.band}>
@@ -177,6 +190,25 @@ export default function Home() {
               <span className="eyebrow">{e === "ativo" ? "Integrado" : "Aguardando convênio"}</span>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className={s.noite2}>
+        <div className="wrap">
+          <div className={s.secHead}>
+            <p className="eyebrow">Próximas paradas</p>
+            <h2 className={s.h2}>O que mais entra no Guatá.</h2>
+          </div>
+          <ol className={s.rota}>
+            {PROXIMOS.map(([t, d], k) => (
+              <li key={t}>
+                <span className={s.parada}><i /></span>
+                <span className={`num ${s.rotaN}`}>{String(k + 1).padStart(2, "0")}</span>
+                <h3>{t}</h3>
+                <p>{d}</p>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 

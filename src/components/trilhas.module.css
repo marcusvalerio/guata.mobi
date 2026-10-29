@@ -1,0 +1,34 @@
+.cena { position: absolute; left: 0; right: 0; bottom: 0; height: 58%; pointer-events: none; }
+@media (max-width: 720px) { .cena { height: 46%; } }
+.svg { width: 100%; height: 100%; display: block; }
+
+.desenho {
+  fill: none; stroke: #dbe0e1; stroke-width: 1.6; stroke-linecap: round; opacity: .55;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  animation: desenhar 1.8s cubic-bezier(.6, 0, .2, 1) forwards;
+}
+.rampaBase { stroke: #95122c; stroke-width: 5; opacity: .9; animation-duration: 2.6s; }
+@keyframes desenhar { to { stroke-dashoffset: 0; } }
+
+.via { fill: none; stroke: #dbe0e1; stroke-width: 1; opacity: .08; }
+
+.luz {
+  fill: none; stroke-linecap: round; stroke-dasharray: 9 91;
+  animation-name: correr; animation-timing-function: linear; animation-iteration-count: infinite;
+}
+@keyframes correr { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+.farol { stroke: #f3f4f5; stroke-width: 2.4; }
+.lanterna { stroke: #ff9408; stroke-width: 2.6; }
+.vinho { stroke: #ca3f16; stroke-width: 2.2; }
+.subida {
+  stroke: #ff9408; stroke-width: 3; stroke-dasharray: 4 96;
+  animation-duration: 6s; animation-delay: 2.8s;
+}
+
+.reflexo { animation: pulso 6s ease-in-out infinite; }
+@keyframes pulso { 50% { opacity: .6; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .desenho { stroke-dashoffset: 0; }
+  .luz { opacity: 0; }
+}
