@@ -49,13 +49,13 @@ export function Pesquisa({ linhas, plataforma }: { linhas: Linha[]; plataforma: 
 
   const respondidas: [number, boolean][] = [
     [1, !!linhaId], [2, tempo !== null], [3, espera !== null], [4, noHorario !== null],
-    [5, !!integracao], [6, !!lotacao], [7, !!clima && !!transito], [8, !!satisfacao],
+    [5, !!integracao], [6, !!lotacao], [7, !!clima], [8, !!transito], [9, !!satisfacao],
   ];
   const faltam = respondidas.filter(([, ok]) => !ok).map(([n]) => n);
   const completo = faltam.length === 0;
   const [mostrarFaltas, setMostrarFaltas] = useState(false);
   const falta = (n: number) => mostrarFaltas && faltam.includes(n);
-  const feitas = [linhaId, tempo, espera, noHorario, integracao, lotacao, clima && transito, satisfacao].filter((x) => x !== null && x !== "").length;
+  const feitas = [linhaId, tempo, espera, noHorario, integracao, lotacao, clima, transito, satisfacao].filter((x) => x !== null && x !== "").length;
 
   async function enviar(e: React.FormEvent) {
     e.preventDefault();
@@ -95,9 +95,9 @@ export function Pesquisa({ linhas, plataforma }: { linhas: Linha[]; plataforma: 
     <main className={s.page}>
       <div className={s.head}>
         <Logo />
-        <span className="num" style={{ fontSize: 13, color: "var(--muted)" }}>{feitas}/8</span>
+        <span className="num" style={{ fontSize: 13, color: "var(--muted)" }}>{feitas}/9</span>
       </div>
-      <div className={s.progress}><span style={{ width: `${(feitas / 8) * 100}%` }} /></div>
+      <div className={s.progress}><span style={{ width: `${(feitas / 9) * 100}%` }} /></div>
       <h1 className={s.h1}>Como foi sua viagem?</h1>
       <p className={s.sub}>Anônimo, sem cadastro. Leva menos de um minuto.</p>
 
@@ -145,14 +145,18 @@ export function Pesquisa({ linhas, plataforma }: { linhas: Linha[]; plataforma: 
         </fieldset>
 
         <fieldset className={`field ${falta(7) ? s.falta : ""}`} id="q7">
-          <span>7. Como estava o tempo e o trânsito?</span>
+          <span>7. Como estava o tempo?</span>
           {climaAuto && <small style={{ color: "var(--muted)" }}>Marcamos o tempo de agora no terminal. Corrija se na sua viagem estava diferente.</small>}
           <Chips ops={[{ v: "sol" as const, t: "Sol" }, { v: "nublado" as const, t: "Nublado" }, { v: "chuva" as const, t: "Chuva" }]} valor={clima} set={setClima} />
-          <Chips ops={[{ v: "livre" as const, t: "Livre" }, { v: "moderado" as const, t: "Lento" }, { v: "congestionado" as const, t: "Engarrafado" }]} valor={transito} set={setTransito} />
         </fieldset>
 
         <fieldset className={`field ${falta(8) ? s.falta : ""}`} id="q8">
-          <span>8. Nota geral para a viagem</span>
+          <span>8. Como estava o trânsito?</span>
+          <Chips ops={[{ v: "livre" as const, t: "Livre" }, { v: "moderado" as const, t: "Lento" }, { v: "congestionado" as const, t: "Engarrafado" }]} valor={transito} set={setTransito} />
+        </fieldset>
+
+        <fieldset className={`field ${falta(9) ? s.falta : ""}`} id="q9">
+          <span>9. Nota geral para a viagem</span>
           <div className={s.likert}>
             {[1, 2, 3, 4, 5].map((n) => (
               <button type="button" key={n} className="chip" aria-pressed={satisfacao === n} onClick={() => setSat(n)} aria-label={`Nota ${n}`}>{n}</button>
@@ -181,7 +185,6 @@ export function Pesquisa({ linhas, plataforma }: { linhas: Linha[]; plataforma: 
         {mostrarFaltas && !completo && (
           <p role="alert" style={{ color: "var(--stop)" }}>
             Falta responder {faltam.length === 1 ? "a pergunta" : "as perguntas"} {faltam.join(", ")}.
-            {faltam.includes(7) && clima && !transito ? " Na 7, marque também como estava o trânsito." : ""}
           </p>
         )}
         {estado === "erro" && <p role="alert" style={{ color: "var(--stop)" }}>Não foi possível enviar. Verifique a internet e tente de novo.</p>}

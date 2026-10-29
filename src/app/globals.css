@@ -107,6 +107,7 @@ textarea.input { height: auto; padding: 10px 12px; min-height: 80px; resize: ver
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip {
+  touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none;
   min-height: 42px; padding: 0 14px; border-radius: var(--r); border: 1px solid var(--line);
   background: var(--card); cursor: pointer; font-family: var(--font-ui); font-size: 15px;
 }

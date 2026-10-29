@@ -8,7 +8,7 @@ Protótipo da pesquisa *Ciência de Dados e Indicadores Operacionais* (PET/COPPE
 | Rota | Quem acessa | O que faz |
 |---|---|---|
 | `/` | público | Landing page do estudo |
-| `/r` | passageiro (QR Code) | Pesquisa anônima de 8 perguntas; `?p=A` filtra a plataforma |
+| `/r` | passageiro (QR Code) | Pesquisa anônima de 9 perguntas; `?p=A` filtra a plataforma |
 | `/telao` | público | Tela do terminal: tempo estimado por linha + QR Code |
 | `/operador` | operador+ | Alertas, ocorrências, contagem manual de fluxo |
 | `/painel` | gestor+ | 6 dimensões ao vivo, índice de tempo de viagem, previsão de amanhã e recomendação de intervalo e frota |

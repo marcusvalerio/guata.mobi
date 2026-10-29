@@ -100,7 +100,7 @@ export const NOTAS: Record<string, Nota> = {
     dimensao: "Satisfação",
     pergunta: "Como o passageiro avalia a viagem e o que ele reclama?",
     coleta: [
-      "Pesquisa por QR Code, pergunta 8: nota geral em escala Likert de 1 (muito ruim) a 5 (muito boa).",
+      "Pesquisa por QR Code, pergunta 9: nota geral em escala Likert de 1 (muito ruim) a 5 (muito boa).",
       "Campo opcional de reclamação ou sugestão, com aviso para não escrever dados pessoais.",
     ],
     calculo: [
