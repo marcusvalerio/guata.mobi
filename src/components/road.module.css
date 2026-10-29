@@ -1,0 +1,32 @@
+.road { position: relative; border-radius: var(--r); overflow: hidden; height: clamp(180px, 26vw, 300px); }
+.svg { width: 100%; height: 100%; display: block; }
+.lane { stroke: #e9e4d6; stroke-width: 3; stroke-dasharray: 38 30; animation: lane 1.2s linear infinite; opacity: .7; }
+@keyframes lane { to { stroke-dashoffset: -68; } }
+
+.bus { animation-timing-function: linear; animation-iteration-count: infinite; }
+.fast { animation-name: drive; animation-duration: 5.5s; }
+.mid { animation-name: drive; animation-duration: 9s; }
+.mid2 { animation-name: drive; animation-duration: 9s; animation-delay: -4.5s; }
+.jam { animation-name: jam; animation-duration: 14s; }
+.jam2 { animation-name: jam; animation-duration: 14s; animation-delay: -1.4s; }
+
+@keyframes drive { from { transform: translateX(-180px); } to { transform: translateX(1220px); } }
+/* Anda, para antes da faixa (sinal vermelho), segue. */
+@keyframes jam {
+  0% { transform: translateX(-180px); }
+  35% { transform: translateX(690px); }
+  60% { transform: translateX(690px); }
+  100% { transform: translateX(1220px); }
+}
+
+.light {
+  position: absolute; right: 18px; top: 18px; display: grid; gap: 6px; padding: 8px;
+  background: #0d0c0a; border-radius: 8px; border: 1px solid #3a382f;
+}
+.light span { width: 14px; height: 14px; border-radius: 50%; background: #33312b; }
+.r { animation: lr 14s infinite; }
+.y { animation: ly 14s infinite; }
+.g { animation: lg 14s infinite; }
+@keyframes lr { 0%, 34% { background: #33312b; } 35%, 60% { background: #e5483a; box-shadow: 0 0 10px #e5483a; } 61%, 100% { background: #33312b; } }
+@keyframes ly { 0%, 29% { background: #33312b; } 30%, 34% { background: #f2b705; } 35%, 100% { background: #33312b; } }
+@keyframes lg { 0%, 29% { background: #3fae74; box-shadow: 0 0 10px #3fae74; } 30%, 60% { background: #33312b; } 61%, 100% { background: #3fae74; } }

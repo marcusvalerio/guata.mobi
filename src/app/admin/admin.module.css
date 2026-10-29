@@ -1,0 +1,4 @@
+.qrs { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+.qr { border: 1px dashed var(--line); border-radius: var(--r); padding: 14px; display: grid; gap: 10px; justify-items: center; background: #fbfaf6; color: #14130f; }
+.qr img { width: 100%; max-width: 160px; height: auto; }
+.qr figcaption { display: grid; text-align: center; gap: 2px; font-family: var(--font-ui); }

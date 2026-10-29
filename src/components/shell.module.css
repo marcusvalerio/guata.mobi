@@ -1,0 +1,11 @@
+.app { min-height: 100vh; }
+.bar { border-bottom: 1px solid var(--line); background: var(--card); position: sticky; top: 0; z-index: 5; }
+.barIn { max-width: 1320px; margin: 0 auto; padding: 0 20px; height: 56px; display: flex; align-items: center; gap: 28px; }
+.nav { display: flex; gap: 4px; flex: 1; overflow-x: auto; }
+.nav a { text-decoration: none; font-family: var(--font-ui); font-size: 14px; padding: 6px 10px; border-radius: var(--r); color: var(--ink-2); white-space: nowrap; }
+.nav a[aria-current="page"] { background: var(--ink); color: var(--paper); }
+.nav a:not([aria-current]):hover { background: var(--paper-2); }
+.user { display: flex; align-items: center; gap: 10px; }
+.sair { background: none; border: 0; cursor: pointer; font-size: 14px; color: var(--muted); text-decoration: underline; }
+@media (max-width: 640px) { .user .tag { display: none; } .barIn { gap: 12px; } }
+.main { max-width: 1320px; margin: 0 auto; padding: 28px 20px 64px; }
