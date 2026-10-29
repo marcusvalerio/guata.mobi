@@ -181,7 +181,7 @@ export default function Home() {
             ["Previsão do tempo", "ativo", "Probabilidade de chuva por período, base da previsão do dia seguinte."],
             ["MOBNIT", "pendente", "Itinerários e quadros horários (GTFS) para comparar programado e realizado."],
             ["NitTrans", "pendente", "Contagens volumétricas e estudos de tráfego do entorno."],
-            ["Gêmeo Digital", "pendente", "Camadas territoriais para leitura espacial dos fluxos."],
+            ["SIGeo · Prefeitura de Niterói", "ativo", "Traçado oficial das linhas municipais, abrigos de ônibus, câmeras da NitTrans e barcas, no mapa."],
             ["Bilhetagem e sensores", "pendente", "Validações por linha e contagem automática nas entradas."],
           ].map(([n, e, d]) => (
             <div key={n} className={s.source}>

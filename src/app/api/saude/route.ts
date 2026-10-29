@@ -20,7 +20,7 @@ export async function GET() {
       { nome: "Previsão do tempo (Open-Meteo)", estado: clima.fonte === "open-meteo" ? "ok" : "falha", detalhe: clima.erro ?? `${latClima} ms` },
       { nome: "MOBNIT · GTFS de itinerários", estado: "pendente", detalhe: "Aguardando liberação do arquivo GTFS" },
       { nome: "NitTrans · contagens volumétricas", estado: "pendente", detalhe: "Aguardando convênio" },
-      { nome: "Gêmeo Digital · camadas ArcGIS", estado: "pendente", detalhe: "Aguardando endpoints do SIGeo" },
+      { nome: "SIGeo · linhas, abrigos, câmeras e barcas", estado: "ok", detalhe: "Camadas abertas carregadas no mapa pelo navegador" },
       { nome: "Bilhetagem (validadores dos ônibus)", estado: "pendente", detalhe: "Depende de acordo com consórcios" },
       { nome: "Sensores de contagem do terminal", estado: process.env.GUATA_CHAVE_INTEGRACAO ? "ok" : "pendente", detalhe: "POST /api/contagens com x-guata-chave" },
     ],
