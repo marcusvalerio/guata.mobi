@@ -17,7 +17,8 @@
 
   --font-ui: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-text: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  /* Só Geist Sans e Inter. Números usam algarismos tabulares da Geist. */
+  --font-mono: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
 
   --r: 6px;
   --wrap: 1180px;
