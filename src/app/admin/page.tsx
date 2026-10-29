@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { Shell } from "@/components/Shell";
 import { NOME_PAPEL } from "@/lib/auth";
@@ -20,6 +21,7 @@ const PERMISSOES = [
 ] as const;
 
 async function TabelaLinhas() {
+  await connection();
   const b = await banco();
   return <Linhas linhas={b.linhas} plataformas={PLATAFORMAS} />;
 }
