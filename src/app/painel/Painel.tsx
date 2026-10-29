@@ -50,7 +50,7 @@ export function Painel() {
         </div>
       )}
 
-      <section className={s.kpis} aria-label="Indicadores chave">
+      <section className={s.kpis} aria-label="Indicadores-chave">
         {kpis.map((k) => (
           <article key={k.dimensao} className={`card ${s.kpi} ${s.clicavel}`} data-status={k.n === 0 ? "vazio" : k.status} role="button" tabIndex={0} onClick={() => setAberto(k.dimensao)} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setAberto(k.dimensao)}>
             <div className={s.kpiTop}>
@@ -145,7 +145,7 @@ export function Painel() {
             <p className="eyebrow">Previsão para amanhã</p>
             <h2>Chuva por período</h2>
           </div>
-          <span className="tag">{previsao.fonte === "open-meteo" ? "Open Meteo" : "Sem previsão · assumindo tempo seco"}</span>
+          <span className="tag">{previsao.fonte === "open-meteo" ? "Open-Meteo" : "Sem previsão · assumindo tempo seco"}</span>
         </div>
         <div className={s.rain}>
           {previsao.periodos.map((p) => (

@@ -8,8 +8,8 @@ import { CAMADAS, FONTE_SIGEO, geojson } from "@/lib/sigeo";
 import type { DadosPainel } from "@/lib/usePainel";
 import s from "./mapa.module.css";
 
-/** Textos vindos do SIGeo trazem " - " como separador; a regra editorial do Guatá não usa hífen. */
-const semHifen = (t: string) => t.replace(/\s*[-–—]\s*/g, " / ");
+/** Textos do SIGeo usam " - " como separador; troca por barra. Hífen dentro de palavra fica. */
+const semHifen = (t: string) => t.replace(/\s+[-–—]\s+|[–—]/g, " / ");
 
 const COR = { ok: "#100c08", atencao: "#ca3f16", critico: "#95122c" } as const;
 

@@ -1,7 +1,7 @@
 /**
  * Nota metodológica de cada indicador, escrita a partir de Gaze et al. (2026),
- * Tabela 1 e arquitetura em cinco camadas. Regra editorial: nenhum hífen ou
- * travessão nos textos exibidos.
+ * Tabela 1 e arquitetura em cinco camadas. Regra editorial: nenhum travessão
+ * nos textos exibidos.
  */
 
 export interface Nota {
@@ -14,6 +14,8 @@ export interface Nota {
   camadas: string;
   referencias: string[];
 }
+
+const SORIANO = "SORIANO-GONZALEZ, R. et al. Analyzing key performance indicators for mobility logistics in smart and sustainable cities: a case study centered on Barcelona. Logistics, v. 7, n. 4, 2023.";
 
 const ARTIGO = "GAZE, R. et al. Ciência de Dados e Indicadores Operacionais: painel inteligente para o Terminal Rodoviário de Niterói (RJ). 23ª RDT, 2026. Tabela 1.";
 
@@ -36,7 +38,7 @@ export const NOTAS: Record<string, Nota> = {
       "Sem bilhetagem, não há separação por linha nem por sentido.",
     ],
     camadas: "Camada (i) coleta: contagem de passageiros. Camada (iii) processamento: projeção horária e detecção de pico.",
-    referencias: [ARTIGO, "CHARALAMPIDOU, G.; KOPSACHEILIS, A.; POLITIS, I. Assessing the operation of a multimodal hub. Infrastructures, 2024."],
+    referencias: [ARTIGO, SORIANO, "CHARALAMPIDOU, G.; KOPSACHEILIS, A.; POLITIS, I. Assessing the operation of a multimodal hub. Infrastructures, 2024."],
   },
   Operação: {
     dimensao: "Operação",
@@ -55,7 +57,7 @@ export const NOTAS: Record<string, Nota> = {
       "A comparação com o programado depende do GTFS do MOBNIT ou dos dados de GPS da frota.",
     ],
     camadas: "Camada (i) coleta: pesquisa de satisfação. Camada (iii): agregação por janela de 24 horas.",
-    referencias: [ARTIGO, "FIORE, S. et al. An integrated big and fast data analytics platform for smart urban transportation management. IEEE Access, 2019."],
+    referencias: [ARTIGO, SORIANO, "FIORE, S. et al. An integrated big and fast data analytics platform for smart urban transportation management. IEEE Access, 2019."],
   },
   Infraestrutura: {
     dimensao: "Infraestrutura",
@@ -111,7 +113,7 @@ export const NOTAS: Record<string, Nota> = {
       "Notas extremas tendem a ser mais frequentes do que na população de usuários.",
     ],
     camadas: "Camada (i) coleta: pesquisa de satisfação (escore Likert). Camada (v) governança: anonimização conforme a LGPD.",
-    referencias: [ARTIGO, "BRASIL. Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD)."],
+    referencias: [ARTIGO, SORIANO, "BRASIL. Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD)."],
   },
   Segurança: {
     dimensao: "Segurança",

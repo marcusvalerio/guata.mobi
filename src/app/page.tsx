@@ -113,7 +113,7 @@ export default function Home() {
 
       <section id="dimensoes" className="wrap">
         <div className={s.secHead}>
-          <p className="eyebrow">Tabela 1 · Indicadores chave de desempenho</p>
+          <p className="eyebrow">Tabela 1 · Indicadores-chave de desempenho</p>
           <h2 className={s.h2}>Seis dimensões, um painel.</h2>
         </div>
         <ol className={s.dims}>

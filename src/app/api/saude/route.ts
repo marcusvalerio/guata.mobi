@@ -17,7 +17,7 @@ export async function GET() {
     banco: { modo: MODO_BANCO, respostas: b.respostas.length, ocorrencias: b.ocorrencias.length, contagens: b.contagens.length },
     coleta: { ultimaHora, ultimaReal },
     integracoes: [
-      { nome: "Previsão do tempo (Open Meteo)", estado: clima.fonte === "open-meteo" ? "ok" : "falha", detalhe: clima.erro ?? `${latClima} ms` },
+      { nome: "Previsão do tempo (Open-Meteo)", estado: clima.fonte === "open-meteo" ? "ok" : "falha", detalhe: clima.erro ?? `${latClima} ms` },
       { nome: "MOBNIT · GTFS de itinerários", estado: "pendente", detalhe: "Aguardando liberação do arquivo GTFS" },
       { nome: "NitTrans · contagens volumétricas", estado: "pendente", detalhe: "Aguardando convênio" },
       { nome: "SIGeo · linhas, abrigos, câmeras e barcas", estado: "ok", detalhe: "Camadas abertas carregadas no mapa pelo navegador" },

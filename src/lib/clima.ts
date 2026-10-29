@@ -9,7 +9,7 @@ let cache: { em: number; dados: Awaited<ReturnType<typeof buscar>> } | null = nu
 async function buscar() {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&hourly=precipitation_probability&timezone=America%2FSao_Paulo&forecast_days=2`;
   const res = await fetch(url, { signal: AbortSignal.timeout(4000), cache: "no-store" });
-  if (!res.ok) throw new Error(`Open Meteo ${res.status}`);
+  if (!res.ok) throw new Error(`Open-Meteo ${res.status}`);
   const j = (await res.json()) as { hourly: { time: string[]; precipitation_probability: number[] } };
   return j.hourly;
 }

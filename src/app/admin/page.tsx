@@ -59,14 +59,14 @@ export default function Page() {
         <section className={`card ${s.block}`}>
           <div className={s.blockH}><div><p className="eyebrow">Equipe</p><h2>Usuários e cargos</h2></div></div>
           <table>
-            <thead><tr><th>Nome</th><th>Email</th><th>Cargo</th></tr></thead>
+            <thead><tr><th>Nome</th><th>E-mail</th><th>Cargo</th></tr></thead>
             <tbody>
               {USUARIOS_DEMO.map((u) => (
                 <tr key={u.id}><td>{u.nome}</td><td className="num" style={{ fontSize: 13 }}>{u.email}</td><td><span className="tag">{NOME_PAPEL[u.papel]}</span></td></tr>
               ))}
             </tbody>
           </table>
-          <p className={s.muted}>Convites por email entram junto com o banco de dados (Supabase Auth).</p>
+          <p className={s.muted}>Convites por e-mail entram junto com o banco de dados (Supabase Auth).</p>
         </section>
 
         <section className={`card ${s.block}`}>
@@ -101,7 +101,7 @@ export default function Page() {
           </div>
           <div className="scroll-x">
             <table>
-              <thead><tr><th>Consórcio</th><th>Empresa</th><th>Veículos</th><th>Ar condicionado</th><th>Acessibilidade</th><th>GPS</th><th>Câmera</th><th>Lugares sentados</th></tr></thead>
+              <thead><tr><th>Consórcio</th><th>Empresa</th><th>Veículos</th><th>Ar-condicionado</th><th>Acessibilidade</th><th>GPS</th><th>Câmera</th><th>Lugares sentados</th></tr></thead>
               <tbody>
                 {FROTA.empresas.map((e) => (
                   <tr key={e.empresa}>

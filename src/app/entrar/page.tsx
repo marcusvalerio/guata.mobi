@@ -23,7 +23,7 @@ export default function Entrar({ searchParams }: PageProps<"/entrar">) {
       <div>
         <h1 style={{ fontSize: 34 }}>Entrar</h1>
         <p style={{ color: "var(--muted)", marginTop: 8 }}>
-          Ambiente de demonstração: escolha um perfil. Na versão com banco, cada pessoa entra com email e o cargo vem do cadastro.
+          Ambiente de demonstração: escolha um perfil. Na versão com banco, cada pessoa entra com e-mail e o cargo vem do cadastro.
         </p>
       </div>
       <form action="/api/sessao" method="post" style={{ display: "grid", gap: 10 }}>
