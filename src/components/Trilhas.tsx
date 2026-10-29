@@ -3,7 +3,7 @@ import s from "./trilhas.module.css";
 /**
  * Aurora sobre a baía: faixas largas e desfocadas seguem as curvas do Caminho
  * Niemeyer e ondulam devagar. Dentro delas, brilhos difusos correm como faróis
- * e lanternas vistos de longe. O MAC fica só sugerido, quase apagado.
+ * e lanternas vistos de longe.
  */
 
 const FAIXAS = [
@@ -15,12 +15,6 @@ const FAIXAS = [
 
 const VIAS = [FAIXAS[0].d, FAIXAS[1].d, FAIXAS[2].d];
 
-const MAC = [
-  "M800 286 C900 274 1220 274 1320 286",
-  "M800 286 C860 352 960 376 1060 376 C1160 376 1260 352 1320 286",
-  "M1012 376 C1016 410 1018 440 1020 470",
-  "M1108 376 C1104 410 1102 440 1100 470",
-];
 
 const LUZES = [
   { via: 0, cor: "#f3f4f5", dur: 9, atraso: 0 },
@@ -47,10 +41,6 @@ export function Trilhas() {
           {FAIXAS.map((f) => (
             <path key={f.d} d={f.d} fill="none" stroke={f.cor} strokeWidth={f.largura} strokeLinecap="round" className={s[f.classe]} />
           ))}
-        </g>
-
-        <g className={s.mac} transform="translate(0 70)">
-          {MAC.map((d) => <path key={d} d={d} />)}
         </g>
 
         <g filter="url(#halo)">
