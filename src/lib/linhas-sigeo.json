@@ -1,0 +1,293 @@
+{
+ "fonte": "MOBNIT / Prefeitura de Niterói, camada RotasMobNit (SIGeo), linhas a até 250 m do terminal",
+ "coletadoEm": "2026-10-29",
+ "linhas": [
+  {
+   "id": "l66c",
+   "codigo": "66C",
+   "nome": "Sao Lourenco x Amaral Peixoto",
+   "consorcio": "Não informado",
+   "extensaoKm": 0
+  },
+  {
+   "id": "l15",
+   "codigo": "15",
+   "nome": "Ilha Conceição x Centro",
+   "consorcio": "TransNit",
+   "extensaoKm": 4.6
+  },
+  {
+   "id": "l21",
+   "codigo": "21",
+   "nome": "Bonfim x Terminal João Goulart",
+   "consorcio": "TransNit",
+   "extensaoKm": 6.2
+  },
+  {
+   "id": "l22",
+   "codigo": "22",
+   "nome": "Bonfim x Amaral Peixoto",
+   "consorcio": "TransNit",
+   "extensaoKm": 8.6
+  },
+  {
+   "id": "l22a",
+   "codigo": "22A",
+   "nome": "Praça Renascença x Banco Itaú",
+   "consorcio": "TransNit",
+   "extensaoKm": 0
+  },
+  {
+   "id": "l24",
+   "codigo": "24",
+   "nome": "Palmeiras x Terminal João Goulart (via Gragoatá)",
+   "consorcio": "TransNit",
+   "extensaoKm": 5.8
+  },
+  {
+   "id": "l26",
+   "codigo": "26",
+   "nome": "Florária x Centro",
+   "consorcio": "TransNit",
+   "extensaoKm": 9.7
+  },
+  {
+   "id": "l26a",
+   "codigo": "26A",
+   "nome": "Morro Céu x Centro",
+   "consorcio": "TransNit",
+   "extensaoKm": 9.0
+  },
+  {
+   "id": "l30",
+   "codigo": "30",
+   "nome": "Martins Torres",
+   "consorcio": "TransNit",
+   "extensaoKm": 6.4
+  },
+  {
+   "id": "l31",
+   "codigo": "31",
+   "nome": "Ponta Da Areia",
+   "consorcio": "TransNit",
+   "extensaoKm": 9.3
+  },
+  {
+   "id": "l41jb",
+   "codigo": "41JB",
+   "nome": "Venda Da Cruz x Terminal / Via Joao Brasil",
+   "consorcio": "TransNit",
+   "extensaoKm": 6.3
+  },
+  {
+   "id": "l42s",
+   "codigo": "42S",
+   "nome": "Barreto x Amaral Peixoto",
+   "consorcio": "TransNit",
+   "extensaoKm": 0
+  },
+  {
+   "id": "l42t",
+   "codigo": "42T",
+   "nome": "Venda Da Cruz x Terminal",
+   "consorcio": "TransNit",
+   "extensaoKm": 0
+  },
+  {
+   "id": "l43_2",
+   "codigo": "43.2",
+   "nome": "Cubango ( 22 Novembro) x Terminal João Goulart",
+   "consorcio": "TransNit",
+   "extensaoKm": 0
+  },
+  {
+   "id": "l47",
+   "codigo": "47",
+   "nome": "Vital Brasil x Terminal",
+   "consorcio": "TransNit",
+   "extensaoKm": 7.3
+  },
+  {
+   "id": "l47a",
+   "codigo": "47A",
+   "nome": "Circular / Campus Da Uff",
+   "consorcio": "TransNit",
+   "extensaoKm": 8.1
+  },
+  {
+   "id": "l47b",
+   "codigo": "47B",
+   "nome": "Museu / Mac / Campus Da Uff",
+   "consorcio": "TransNit",
+   "extensaoKm": 8.2
+  },
+  {
+   "id": "l49_1",
+   "codigo": "49.1",
+   "nome": "Bonfim x Barcas",
+   "consorcio": "TransNit",
+   "extensaoKm": 0
+  },
+  {
+   "id": "l49_2",
+   "codigo": "49.2",
+   "nome": "São José x Leader",
+   "consorcio": "TransNit",
+   "extensaoKm": 0
+  },
+  {
+   "id": "l60",
+   "codigo": "60",
+   "nome": "Ilha Conceição x Icaraí",
+   "consorcio": "TransNit",
+   "extensaoKm": 8.4
+  },
+  {
+   "id": "l67",
+   "codigo": "67",
+   "nome": "Morro Do Castro x Niteroi",
+   "consorcio": "TransNit",
+   "extensaoKm": 11.1
+  },
+  {
+   "id": "l32",
+   "codigo": "32",
+   "nome": "Cachoeira x Terminal Rodoviario",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 10.0
+  },
+  {
+   "id": "l33",
+   "codigo": "33",
+   "nome": "Jurujuba x Terminal Rodoviario",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 13.8
+  },
+  {
+   "id": "l34a",
+   "codigo": "34A",
+   "nome": "Largo Da Batalha x Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 10.0
+  },
+  {
+   "id": "l35",
+   "codigo": "35",
+   "nome": "Baldeador x Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 16.5
+  },
+  {
+   "id": "l36",
+   "codigo": "36",
+   "nome": "Sapê x Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 13.0
+  },
+  {
+   "id": "l37",
+   "codigo": "37",
+   "nome": "Parque Da Colina x Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 11.2
+  },
+  {
+   "id": "l38a",
+   "codigo": "38A",
+   "nome": "Itaipu x Centro (via Eng Do Mato)",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 31.5
+  },
+  {
+   "id": "l39a",
+   "codigo": "39A",
+   "nome": "Piratininga x Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 22.7
+  },
+  {
+   "id": "l40",
+   "codigo": "40",
+   "nome": "Maceió x Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 11.1
+  },
+  {
+   "id": "l44",
+   "codigo": "44",
+   "nome": "Ititioca x Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 11.9
+  },
+  {
+   "id": "l45",
+   "codigo": "45",
+   "nome": "Cubango x Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 8.8
+  },
+  {
+   "id": "l46",
+   "codigo": "46",
+   "nome": "Várzea Das Moças x Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 26.5
+  },
+  {
+   "id": "l48",
+   "codigo": "48",
+   "nome": "Rio Do Ouro x Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 20.0
+  },
+  {
+   "id": "l48b",
+   "codigo": "48B",
+   "nome": "Bosque x Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 0
+  },
+  {
+   "id": "l53",
+   "codigo": "53",
+   "nome": "Santa Rosa x Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 7.7
+  },
+  {
+   "id": "l57",
+   "codigo": "57",
+   "nome": "Santa Rosa x Centro (via Fagundes Varela)",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 0
+  },
+  {
+   "id": "loc1",
+   "codigo": "OC1",
+   "nome": "Oceânica 1",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 19.1
+  },
+  {
+   "id": "loc2",
+   "codigo": "OC2",
+   "nome": "Oceânica 2",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 22.0
+  },
+  {
+   "id": "loc3",
+   "codigo": "OC3",
+   "nome": "Oceânica 3",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 25.2
+  },
+  {
+   "id": "loc3a",
+   "codigo": "OC3A",
+   "nome": "Oceânica 3a",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 0
+  }
+ ]
+}

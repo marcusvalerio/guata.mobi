@@ -1,0 +1,95 @@
+{
+ "fonte": "Vistoria de frota 2024 (planilha consolidada TransNit e Transoceânico), publicada no repositório Gabrielbrandao27/integracao_mobnit",
+ "empresas": [
+  {
+   "consorcio": "TransNit",
+   "empresa": "Araçatuba",
+   "veiculos": 70,
+   "arCondicionado": 70,
+   "acessibilidade": 70,
+   "gps": 70,
+   "camera": 70,
+   "lugaresSentados": 2520
+  },
+  {
+   "consorcio": "TransNit",
+   "empresa": "Barreto",
+   "veiculos": 11,
+   "arCondicionado": 11,
+   "acessibilidade": 11,
+   "gps": 11,
+   "camera": 11,
+   "lugaresSentados": 376
+  },
+  {
+   "consorcio": "TransNit",
+   "empresa": "Brasília",
+   "veiculos": 43,
+   "arCondicionado": 43,
+   "acessibilidade": 43,
+   "gps": 43,
+   "camera": 43,
+   "lugaresSentados": 1669
+  },
+  {
+   "consorcio": "TransNit",
+   "empresa": "Ingá",
+   "veiculos": 73,
+   "arCondicionado": 72,
+   "acessibilidade": 73,
+   "gps": 73,
+   "camera": 73,
+   "lugaresSentados": 2822
+  },
+  {
+   "consorcio": "TransNit",
+   "empresa": "Peixoto",
+   "veiculos": 21,
+   "arCondicionado": 19,
+   "acessibilidade": 21,
+   "gps": 21,
+   "camera": 21,
+   "lugaresSentados": 829
+  },
+  {
+   "consorcio": "Transoceânico",
+   "empresa": "Fortaleza",
+   "veiculos": 22,
+   "arCondicionado": 22,
+   "acessibilidade": 22,
+   "gps": 22,
+   "camera": 22,
+   "lugaresSentados": 824
+  },
+  {
+   "consorcio": "Transoceânico",
+   "empresa": "Miramar",
+   "veiculos": 50,
+   "arCondicionado": 50,
+   "acessibilidade": 50,
+   "gps": 50,
+   "camera": 50,
+   "lugaresSentados": 1829
+  },
+  {
+   "consorcio": "Transoceânico",
+   "empresa": "Pendotiba",
+   "veiculos": 135,
+   "arCondicionado": 135,
+   "acessibilidade": 135,
+   "gps": 134,
+   "camera": 135,
+   "lugaresSentados": 5699
+  },
+  {
+   "consorcio": "Transoceânico",
+   "empresa": "Santo Antonio",
+   "veiculos": 97,
+   "arCondicionado": 97,
+   "acessibilidade": 97,
+   "gps": 97,
+   "camera": 97,
+   "lugaresSentados": 3818
+  }
+ ]
+}
