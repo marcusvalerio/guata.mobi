@@ -153,7 +153,7 @@ export default function Home() {
             <div>
               <span className="num">01</span>
               <h3>Passageiro escaneia</h3>
-              <p>QR Code nas plataformas. Oito perguntas, menos de um minuto, sem cadastro e sem dado pessoal.</p>
+              <p>QR Code nas plataformas. Nove perguntas, menos de um minuto, sem cadastro e sem dado pessoal.</p>
             </div>
             <div>
               <span className="num">02</span>
