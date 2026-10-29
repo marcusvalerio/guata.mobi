@@ -39,7 +39,7 @@ export function Operacao({ plataformas }: { plataformas: string[] }) {
     if (r.ok) setPass("");
   }
 
-  const alertas = dados?.tempoViagem.filter((t) => t.status !== "ok") ?? [];
+  const alertas = dados?.tempoViagem.filter((t) => t.amostras > 0 && t.status !== "ok") ?? [];
   const criticos = dados?.kpis.filter((k) => k.status === "critico") ?? [];
 
   return (
@@ -63,7 +63,7 @@ export function Operacao({ plataformas }: { plataformas: string[] }) {
           {alertas.map((t) => (
             <li key={t.linha.id} style={{ gridTemplateColumns: "auto 1fr" }}>
               <span className={`dot ${t.status}`} />
-              <span><strong className="num">Linha {t.linha.codigo}</strong> (plat. {t.linha.plataforma}): {t.alerta ?? `${t.observado} min observado, ${t.esperado} min esperado`}</span>
+              <span><strong className="num">Linha {t.linha.codigo}</strong> (plat. {t.linha.plataforma ?? "–"}): {t.alerta ?? `${t.observado} min observado, ${t.esperado ?? "sem histórico de"} min esperado`}</span>
             </li>
           ))}
         </ul>

@@ -244,7 +244,7 @@ export default function Home() {
 
       <footer className={`wrap ${s.foot}`}>
         <Logo size={18} />
-        <span>Protótipo acadêmico. Dados de demonstração identificados como simulados.</span>
+        <span>Protótipo acadêmico. Dados de passageiros e operação registrados no terminal; linhas e mapa do SIGeo · Prefeitura de Niterói.</span>
       </footer>
     </main>
   );

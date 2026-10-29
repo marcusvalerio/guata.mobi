@@ -17,9 +17,7 @@ const quando = (iso: string | null) => (iso ? new Date(iso).toLocaleString("pt-B
 export function Central() {
   const [d, setD] = useState<Saude | null>(null);
   const [ms, setMs] = useState<number | null>(null);
-  const [aviso, setAviso] = useState<string | null>(null);
 
-  const [versao, setVersao] = useState(0);
   useEffect(() => {
     let vivo = true;
     const carregar = async () => {
@@ -33,14 +31,7 @@ export function Central() {
     carregar();
     const id = setInterval(carregar, 15000);
     return () => { vivo = false; clearInterval(id); };
-  }, [versao]);
-
-  async function simulacao(acao: "reiniciar" | "limpar") {
-    if (acao === "limpar" && !confirm("Remover todas as respostas simuladas? Ficam só as reais.")) return;
-    const r = await fetch("/api/simulacao", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ acao }) });
-    setAviso(r.ok ? (acao === "limpar" ? "Dados simulados removidos." : "Simulação de 28 dias recriada.") : "Ação negada.");
-    setVersao((v) => v + 1);
-  }
+  }, []);
 
   return (
     <div className={s.grid}>
@@ -52,13 +43,12 @@ export function Central() {
         <div className={s.live}>
           <span className={`${s.pulse} ${d ? "" : s.off}`} />
           <span>API {ms !== null ? `${ms} ms` : "…"} · verificado {d ? quando(d.em) : "…"}</span>
-          {aviso && <span className="tag">{aviso}</span>}
         </div>
       </div>
 
       <section className={s.kpis}>
         {[
-          ["Banco", d?.banco.modo === "memoria" ? "Memória" : "Postgres", d?.banco.modo === "memoria" ? "Protótipo: reinicia com o servidor" : "Persistente"],
+          ["Banco", d?.banco.modo === "memoria" ? "Memória" : "Neon (Postgres)", d?.banco.modo === "memoria" ? "Local: reinicia com o servidor" : "Persistente · só dados reais"],
           ["Respostas", d?.banco.respostas.toLocaleString("pt-BR"), `${d?.coleta.ultimaHora ?? "–"} na última hora`],
           ["Última resposta real", d ? quando(d.coleta.ultimaReal) : "–", "Vinda de QR Code"],
           ["Ocorrências", d?.banco.ocorrencias, "Total registrado"],
@@ -87,15 +77,6 @@ export function Central() {
             ))}
           </tbody>
         </table>
-      </section>
-
-      <section className={`card ${s.block}`}>
-        <div className={s.blockH}><div><p className="eyebrow">Demonstração</p><h2>Dados simulados</h2></div></div>
-        <p className={s.muted}>O protótipo inicia com 28 dias de respostas simuladas, marcadas como tal, para o painel e a previsão terem histórico. Antes da coleta real, limpe os simulados.</p>
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <button className="btn ghost" onClick={() => simulacao("reiniciar")}>Recriar simulação</button>
-          <button className="btn" onClick={() => simulacao("limpar")}>Manter só dados reais</button>
-        </div>
       </section>
 
       <section className={`card ${s.block}`}>

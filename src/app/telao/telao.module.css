@@ -29,3 +29,4 @@
 .qr { display: flex; gap: 14px; align-items: center; background: #f3f4f5; color: #100c08; padding: 10px 16px 10px 10px; border-radius: 6px; }
 .qr div { display: grid; font-size: 13px; }
 .qr strong { font-family: var(--font-ui); font-size: 17px; }
+.vazio { font-size: clamp(18px, 2.4vw, 30px); color: #a19c97; padding: 40px 0; max-width: 30ch; }

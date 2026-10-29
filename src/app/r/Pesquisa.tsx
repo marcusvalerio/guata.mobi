@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import type { Linha } from "@/lib/types";
@@ -21,7 +21,10 @@ function Chips<T extends string | number | boolean>({ ops, valor, set }: { ops: 
 const TEMPOS = [5, 10, 15, 20, 30, 45, 60, 90, 120];
 
 export function Pesquisa({ linhas, plataforma }: { linhas: Linha[]; plataforma: string | null }) {
-  const daPlataforma = linhas.filter((l) => !plataforma || l.plataforma === plataforma);
+  // Se a plataforma do QR Code tem linhas cadastradas, mostra só elas; senão, todas as linhas oficiais.
+  const cadastradas = linhas.filter((l) => plataforma && l.plataforma === plataforma);
+  const daPlataforma = cadastradas.length ? cadastradas : linhas;
+  const consorcios = [...new Set(daPlataforma.map((l) => l.consorcio))];
   const [linhaId, setLinha] = useState<string>(daPlataforma.length === 1 ? daPlataforma[0].id : "");
   const [tempo, setTempo] = useState<number | null>(null);
   const [espera, setEspera] = useState<number | null>(null);
@@ -35,6 +38,14 @@ export function Pesquisa({ linhas, plataforma }: { linhas: Linha[]; plataforma: 
   const [reclamacao, setRecl] = useState("");
   const [ocorr, setOcorr] = useState<boolean | null>(null);
   const [estado, setEstado] = useState<"editando" | "enviando" | "ok" | "erro">("editando");
+  const [climaAuto, setClimaAuto] = useState(false);
+
+  // Tempo real no terminal (Open-Meteo) já vem marcado; o passageiro pode corrigir.
+  useEffect(() => {
+    fetch("/api/clima").then((r) => r.json()).then((j: { clima: "sol" | "nublado" | "chuva" | null }) => {
+      if (j.clima) { setClima((c) => c ?? j.clima); setClimaAuto(true); }
+    }).catch(() => {});
+  }, []);
 
   const completo = linhaId && tempo !== null && espera !== null && noHorario !== null && integracao && lotacao && clima && transito && satisfacao;
   const feitas = [linhaId, tempo, espera, noHorario, integracao, lotacao, clima && transito, satisfacao].filter((x) => x !== null && x !== "").length;
@@ -47,7 +58,7 @@ export function Pesquisa({ linhas, plataforma }: { linhas: Linha[]; plataforma: 
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
-        linhaId, tempoViagemMin: tempo, esperaMin: espera, saiuNoHorario: noHorario, integracao,
+        linhaId, plataforma, tempoViagemMin: tempo, esperaMin: espera, saiuNoHorario: noHorario, integracao,
         tempoIntegracaoMin: tInteg, lotacaoPlataforma: lotacao, satisfacao, reclamacao,
         presenciouOcorrencia: Boolean(ocorr), clima, transito,
       }),
@@ -84,7 +95,13 @@ export function Pesquisa({ linhas, plataforma }: { linhas: Linha[]; plataforma: 
           <span>1. Qual linha?</span>
           <select className="input" value={linhaId} onChange={(e) => setLinha(e.target.value)} required>
             <option value="">Escolha a linha</option>
-            {daPlataforma.map((l) => <option key={l.id} value={l.id}>{l.codigo} · {l.nome}</option>)}
+            {consorcios.map((c) => (
+              <optgroup key={c} label={c}>
+                {daPlataforma.filter((l) => l.consorcio === c).map((l) => (
+                  <option key={l.id} value={l.id}>{l.codigo}{l.nome.startsWith("Linha ") ? "" : ` · ${l.nome}`}</option>
+                ))}
+              </optgroup>
+            ))}
           </select>
         </label>
 
@@ -118,6 +135,7 @@ export function Pesquisa({ linhas, plataforma }: { linhas: Linha[]; plataforma: 
 
         <fieldset className="field">
           <span>7. Como estava o tempo e o trânsito?</span>
+          {climaAuto && <small style={{ color: "var(--muted)" }}>Marcamos o tempo de agora no terminal. Corrija se na sua viagem estava diferente.</small>}
           <Chips ops={[{ v: "sol" as const, t: "Sol" }, { v: "nublado" as const, t: "Nublado" }, { v: "chuva" as const, t: "Chuva" }]} valor={clima} set={setClima} />
           <Chips ops={[{ v: "livre" as const, t: "Livre" }, { v: "moderado" as const, t: "Lento" }, { v: "congestionado" as const, t: "Engarrafado" }]} valor={transito} set={setTransito} />
         </fieldset>

@@ -48,12 +48,13 @@ export interface Linha {
   id: string;
   codigo: string;
   nome: string;
-  plataforma: string;
-  tipo: "municipal" | "intermunicipal";
-  /** Tempo de referência em fluxo livre (min) e capacidade de plataforma. */
-  tempoBaseMin: number;
-  headwayMin: number;
-  frota: number;
+  consorcio: "TransNit" | "Transoceânico" | string;
+  /** Extensão do traçado no SIGeo (km); null quando a camada não informa. */
+  extensaoKm: number | null;
+  /** Dados operacionais cadastrados pela Administração do terminal. null = não informado. */
+  plataforma: string | null;
+  headwayMin: number | null;
+  frota: number | null;
 }
 
 export type Papel = "central" | "admin" | "gestor" | "operador";

@@ -1,5 +1,4 @@
 import type { Banco } from "./store";
-import { LINHAS } from "./store";
 
 const H = 3600_000;
 
@@ -19,8 +18,8 @@ export function confiabilidade(b: Banco, agora = Date.now()) {
 
   const origem = r24.length ? reais.length / r24.length : 0;
   const volume = Math.min(1, reais.length / META_VOLUME);
-  const comDados = LINHAS.filter((l) => reais.filter((r) => r.linhaId === l.id).length >= 3).length;
-  const cobertura = comDados / LINHAS.length;
+  const comDados = b.linhas.filter((l) => reais.filter((r) => r.linhaId === l.id).length >= 3).length;
+  const cobertura = comDados / b.linhas.length;
   const ultima = reais.at(-1);
   const minutos = ultima ? (agora - Date.parse(ultima.criadoEm)) / 60_000 : Infinity;
   // 100% até 15 min; cai pela metade a cada hora depois disso.
@@ -29,7 +28,7 @@ export function confiabilidade(b: Banco, agora = Date.now()) {
   const fatores: Fator[] = [
     { nome: "Origem", valor: origem, peso: 0.3, detalhe: `${Math.round(origem * 100)}% das respostas de 24h são reais` },
     { nome: "Volume", valor: volume, peso: 0.3, detalhe: `${reais.length} de ${META_VOLUME} respostas reais esperadas em 24h` },
-    { nome: "Cobertura", valor: cobertura, peso: 0.25, detalhe: `${comDados} de ${LINHAS.length} linhas com 3+ relatos reais` },
+    { nome: "Cobertura", valor: cobertura, peso: 0.25, detalhe: `${comDados} de ${b.linhas.length} linhas com 3+ relatos reais` },
     { nome: "Frescor", valor: frescor, peso: 0.15, detalhe: ultima ? `último relato real há ${Math.round(minutos)} min` : "nenhum relato real ainda" },
   ];
   const pct = Math.round(fatores.reduce((a, f) => a + f.valor * f.peso, 0) * 100);

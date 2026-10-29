@@ -1,6 +1,9 @@
+import { Suspense } from "react";
 import { Shell } from "@/components/Shell";
 import { NOME_PAPEL } from "@/lib/auth";
-import { LINHAS, PLATAFORMAS, USUARIOS_DEMO } from "@/lib/store";
+import FROTA from "@/lib/frota-vistoria-2024.json";
+import { banco, FONTE_LINHAS, PLATAFORMAS, USUARIOS_DEMO } from "@/lib/store";
+import { Linhas } from "./Linhas";
 import s from "../painel/painel.module.css";
 import a from "./admin.module.css";
 
@@ -15,6 +18,11 @@ const PERMISSOES = [
   ["Saúde do sistema e integrações", true, false, false, false],
   ["Cadastrar terminais e organizações", true, false, false, false],
 ] as const;
+
+async function TabelaLinhas() {
+  const b = await banco();
+  return <Linhas linhas={b.linhas} plataformas={PLATAFORMAS} />;
+}
 
 export default function Page() {
   return (
@@ -75,16 +83,36 @@ export default function Page() {
 
         <section className={`card ${s.block} ${s.wide}`}>
           <div className={s.blockH}>
-            <div><p className="eyebrow">Rede</p><h2>Linhas cadastradas</h2></div>
-            <span className="tag">Exemplos · substituir pelo GTFS do MOBNIT</span>
+            <div><p className="eyebrow">Rede</p><h2>Linhas que passam pelo terminal</h2></div>
+            <span className={s.muted}>Fonte: {FONTE_LINHAS.fonte} · coletado em {FONTE_LINHAS.coletadoEm}</span>
+          </div>
+          <p className={s.muted}>Plataforma, intervalo e frota não são públicos: cadastre o que a operação confirmar. Sem cadastro, o painel mostra “não informado” e não calcula recomendação para a linha.</p>
+          <Suspense fallback={<p className={s.muted}>Carregando linhas…</p>}>
+            <TabelaLinhas />
+          </Suspense>
+        </section>
+
+        <section className={`card ${s.block} ${s.wide}`}>
+          <div className={s.blockH}>
+            <div><p className="eyebrow">Frota municipal</p><h2>Veículos vistoriados por empresa</h2></div>
+            <span className={s.muted}>{FROTA.fonte}</span>
           </div>
           <div className="scroll-x">
             <table>
-              <thead><tr><th>Código</th><th>Linha</th><th>Tipo</th><th>Plataforma</th><th>Tempo base</th><th>Intervalo</th><th>Frota</th></tr></thead>
+              <thead><tr><th>Consórcio</th><th>Empresa</th><th>Veículos</th><th>Ar-condicionado</th><th>Acessibilidade</th><th>GPS</th><th>Câmera</th><th>Lugares sentados</th></tr></thead>
               <tbody>
-                {LINHAS.map((l) => (
-                  <tr key={l.id}><td className="num"><strong>{l.codigo}</strong></td><td>{l.nome}</td><td>{l.tipo}</td><td className="num">{l.plataforma}</td><td className="num">{l.tempoBaseMin} min</td><td className="num">{l.headwayMin} min</td><td className="num">{l.frota}</td></tr>
+                {FROTA.empresas.map((e) => (
+                  <tr key={e.empresa}>
+                    <td className={s.muted}>{e.consorcio}</td><td>{e.empresa}</td><td className="num"><strong>{e.veiculos}</strong></td>
+                    <td className="num">{e.arCondicionado}</td><td className="num">{e.acessibilidade}</td><td className="num">{e.gps}</td><td className="num">{e.camera}</td><td className="num">{e.lugaresSentados.toLocaleString("pt-BR")}</td>
+                  </tr>
                 ))}
+                <tr>
+                  <td /><td><strong>Total</strong></td>
+                  {(["veiculos", "arCondicionado", "acessibilidade", "gps", "camera", "lugaresSentados"] as const).map((k) => (
+                    <td key={k} className="num"><strong>{FROTA.empresas.reduce((a, e) => a + e[k], 0).toLocaleString("pt-BR")}</strong></td>
+                  ))}
+                </tr>
               </tbody>
             </table>
           </div>

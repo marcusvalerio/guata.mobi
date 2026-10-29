@@ -1,4 +1,4 @@
-import { adicionarResposta, LINHAS } from "@/lib/store";
+import { adicionarResposta, banco, PLATAFORMAS } from "@/lib/store";
 import type { Resposta } from "@/lib/types";
 
 const um = <T extends string>(v: unknown, ops: readonly T[]) => (ops.includes(v as T) ? (v as T) : null);
@@ -7,7 +7,9 @@ const minutos = (v: unknown, max: number) => (typeof v === "number" && v >= 0 &&
 
 export async function POST(req: Request) {
   const b = await req.json().catch(() => null);
-  const linha = LINHAS.find((l) => l.id === b?.linhaId);
+  const linha = (await banco()).linhas.find((l) => l.id === b?.linhaId);
+  // Plataforma vem do QR Code (?p=A); sem ela, a cadastrada para a linha.
+  const plataforma = PLATAFORMAS.includes(b?.plataforma) ? b.plataforma : linha?.plataforma ?? "?";
   const tempo = minutos(b?.tempoViagemMin, 300);
   const espera = minutos(b?.esperaMin, 180);
   const clima = um(b?.clima, ["sol", "nublado", "chuva"] as const);
@@ -18,7 +20,7 @@ export async function POST(req: Request) {
     return Response.json({ erro: "Resposta incompleta ou fora da faixa." }, { status: 400 });
   }
   const r: Omit<Resposta, "id" | "criadoEm" | "simulado"> = {
-    linhaId: linha.id, plataforma: linha.plataforma, tempoViagemMin: tempo, esperaMin: espera,
+    linhaId: linha.id, plataforma, tempoViagemMin: tempo, esperaMin: espera,
     saiuNoHorario: Boolean(b.saiuNoHorario), integracao,
     tempoIntegracaoMin: integracao === "nenhuma" ? null : minutos(b.tempoIntegracaoMin, 120),
     lotacaoPlataforma: lot, satisfacao: sat,

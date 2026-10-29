@@ -1,0 +1,286 @@
+{
+ "fonte": "SIGeo / Prefeitura de Niterói — camadas Linhas de Ônibus TransNit (70) e Transoceânica (80), linhas a até 250 m do terminal",
+ "coletadoEm": "2026-10-29",
+ "linhas": [
+  {
+   "id": "l03",
+   "codigo": "03",
+   "nome": "Linha 03",
+   "consorcio": "TransNit",
+   "extensaoKm": 7.9
+  },
+  {
+   "id": "l15",
+   "codigo": "15",
+   "nome": "Linha 15",
+   "consorcio": "TransNit",
+   "extensaoKm": 4.6
+  },
+  {
+   "id": "l21",
+   "codigo": "21",
+   "nome": "Linha 21",
+   "consorcio": "TransNit",
+   "extensaoKm": 6.2
+  },
+  {
+   "id": "l22",
+   "codigo": "22",
+   "nome": "Linha 22",
+   "consorcio": "TransNit",
+   "extensaoKm": 8.6
+  },
+  {
+   "id": "l24",
+   "codigo": "24",
+   "nome": "Linha 24",
+   "consorcio": "TransNit",
+   "extensaoKm": 5.8
+  },
+  {
+   "id": "l26",
+   "codigo": "26",
+   "nome": "Linha 26",
+   "consorcio": "TransNit",
+   "extensaoKm": 9.7
+  },
+  {
+   "id": "l26a",
+   "codigo": "26A",
+   "nome": "Linha 26A",
+   "consorcio": "TransNit",
+   "extensaoKm": 9.0
+  },
+  {
+   "id": "l28",
+   "codigo": "28",
+   "nome": "Linha 28",
+   "consorcio": "TransNit",
+   "extensaoKm": 16.1
+  },
+  {
+   "id": "l29",
+   "codigo": "29",
+   "nome": "Linha 29",
+   "consorcio": "TransNit",
+   "extensaoKm": 15.0
+  },
+  {
+   "id": "l30",
+   "codigo": "30",
+   "nome": "Linha 30",
+   "consorcio": "TransNit",
+   "extensaoKm": 6.4
+  },
+  {
+   "id": "l31",
+   "codigo": "31",
+   "nome": "Linha 31",
+   "consorcio": "TransNit",
+   "extensaoKm": 9.3
+  },
+  {
+   "id": "l41bc",
+   "codigo": "41BC",
+   "nome": "Linha 41BC",
+   "consorcio": "TransNit",
+   "extensaoKm": 6.5
+  },
+  {
+   "id": "l41jb",
+   "codigo": "41JB",
+   "nome": "Linha 41JB",
+   "consorcio": "TransNit",
+   "extensaoKm": 6.3
+  },
+  {
+   "id": "l42",
+   "codigo": "42",
+   "nome": "Linha 42",
+   "consorcio": "TransNit",
+   "extensaoKm": 6.7
+  },
+  {
+   "id": "l42a",
+   "codigo": "42A",
+   "nome": "Linha 42A",
+   "consorcio": "TransNit",
+   "extensaoKm": 7.4
+  },
+  {
+   "id": "l43",
+   "codigo": "43",
+   "nome": "Linha 43",
+   "consorcio": "TransNit",
+   "extensaoKm": 12.8
+  },
+  {
+   "id": "l47",
+   "codigo": "47",
+   "nome": "Linha 47",
+   "consorcio": "TransNit",
+   "extensaoKm": 7.3
+  },
+  {
+   "id": "l47a",
+   "codigo": "47A",
+   "nome": "Linha 47A",
+   "consorcio": "TransNit",
+   "extensaoKm": 8.1
+  },
+  {
+   "id": "l47b",
+   "codigo": "47B",
+   "nome": "Linha 47B",
+   "consorcio": "TransNit",
+   "extensaoKm": 8.2
+  },
+  {
+   "id": "l49",
+   "codigo": "49",
+   "nome": "Linha 49",
+   "consorcio": "TransNit",
+   "extensaoKm": 15.9
+  },
+  {
+   "id": "l60",
+   "codigo": "60",
+   "nome": "Linha 60",
+   "consorcio": "TransNit",
+   "extensaoKm": 8.4
+  },
+  {
+   "id": "l67",
+   "codigo": "67",
+   "nome": "Linha 67",
+   "consorcio": "TransNit",
+   "extensaoKm": 11.1
+  },
+  {
+   "id": "l32",
+   "codigo": "32",
+   "nome": "Cachoeira – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 10.0
+  },
+  {
+   "id": "l33",
+   "codigo": "33",
+   "nome": "Jurujuba – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 13.8
+  },
+  {
+   "id": "l34a",
+   "codigo": "34A",
+   "nome": "Largo da Batalha – Centro (Via Viçoso Jardim)",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 10.0
+  },
+  {
+   "id": "l35",
+   "codigo": "35",
+   "nome": "Baldeador – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 16.5
+  },
+  {
+   "id": "l36",
+   "codigo": "36",
+   "nome": "Sapê – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 13.0
+  },
+  {
+   "id": "l37",
+   "codigo": "37",
+   "nome": "Parque da Colina – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 11.2
+  },
+  {
+   "id": "l38a",
+   "codigo": "38A",
+   "nome": "Itaipu – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 31.5
+  },
+  {
+   "id": "l39a",
+   "codigo": "39A",
+   "nome": "Piratininga – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 22.7
+  },
+  {
+   "id": "l40",
+   "codigo": "40",
+   "nome": "Maceió – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 11.1
+  },
+  {
+   "id": "l44",
+   "codigo": "44",
+   "nome": "Ititioca – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 11.9
+  },
+  {
+   "id": "l45",
+   "codigo": "45",
+   "nome": "Cubango – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 8.8
+  },
+  {
+   "id": "l46",
+   "codigo": "46",
+   "nome": "Várzea das Moças – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 26.5
+  },
+  {
+   "id": "l48",
+   "codigo": "48",
+   "nome": "Rio do Ouro – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 20.0
+  },
+  {
+   "id": "l53",
+   "codigo": "53",
+   "nome": "Santa Rosa – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 7.7
+  },
+  {
+   "id": "l57",
+   "codigo": "57",
+   "nome": "Santa Rosa – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 0
+  },
+  {
+   "id": "loc1",
+   "codigo": "OC1",
+   "nome": "Oceânica 1 – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 19.1
+  },
+  {
+   "id": "loc2",
+   "codigo": "OC2",
+   "nome": "Oceânica 2 – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 22.0
+  },
+  {
+   "id": "loc3",
+   "codigo": "OC3",
+   "nome": "Oceânica 3 – Centro",
+   "consorcio": "Transoceânico",
+   "extensaoKm": 25.2
+  }
+ ]
+}

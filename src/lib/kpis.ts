@@ -1,4 +1,4 @@
-import { LINHAS, PLATAFORMAS, type Banco } from "./store";
+import { PLATAFORMAS, type Banco } from "./store";
 import { local, periodoDe } from "./tempo";
 import type { Clima, Linha, Periodo, Resposta } from "./types";
 
@@ -79,7 +79,7 @@ export function calcularKpis(b: Banco, agora = Date.now()): Kpi[] {
     {
       dimensao: "Demanda", indicador: "Fluxo de embarque e desembarque", objetivo: "Identificar picos de lotação e dimensionar filas.",
       valor: demandaAgora && Math.round(demandaAgora), unidade: "pass/h",
-      status: faixa(demandaAgora, 3200, 4600), detalhe: `Pico nas últimas 24h às ${horaPico}h`,
+      status: faixa(demandaAgora, 3200, 4600), detalhe: c24.length ? `Pico nas últimas 24h às ${horaPico}h` : "Sem contagens de fluxo em 24h",
       serie: serieDemanda,
     },
     {
@@ -124,7 +124,7 @@ export function porPlataforma(b: Banco, agora = Date.now()) {
     const ocupacao = media(rs.map((r) => ((r.lotacaoPlataforma - 1) / 4) * 100));
     const ocorrencias = o7.filter((o) => o.local === `Plataforma ${p}`).length;
     const status: Status = faixa(ocupacao, 55, 75) === "critico" || ocorrencias >= 6 ? "critico" : faixa(ocupacao, 55, 75);
-    return { plataforma: p, ocupacao: ocupacao && Math.round(ocupacao), ocorrencias, relatos: rs.length, status, linhas: LINHAS.filter((l) => l.plataforma === p).map((l) => l.codigo) };
+    return { plataforma: p, ocupacao: ocupacao && Math.round(ocupacao), ocorrencias, relatos: rs.length, status, linhas: b.linhas.filter((l) => l.plataforma === p).map((l) => l.codigo) };
   });
 }
 
@@ -132,8 +132,11 @@ export function porPlataforma(b: Banco, agora = Date.now()) {
 
 export interface Condicao { clima: Clima; fds: boolean; periodo: Periodo }
 
-/** Média histórica para a linha na condição; afrouxa o filtro se houver poucas amostras. */
-export function estimarTempo(b: Banco, linha: Linha, c: Condicao) {
+/**
+ * Mediana dos relatos reais da linha na condição; afrouxa o filtro se houver poucos.
+ * Sem relatos suficientes, não há estimativa (null) — nada de valor de referência inventado.
+ */
+export function estimarTempo(b: Banco, linha: Linha, c: Condicao): { min: number | null; amostras: number } {
   const rs = b.respostas.filter((r) => r.linhaId === linha.id);
   const climaDe = (r: Resposta) => (r.clima === "chuva" ? "chuva" : "seco");
   const alvo = c.clima === "chuva" ? "chuva" : "seco";
@@ -144,12 +147,9 @@ export function estimarTempo(b: Banco, linha: Linha, c: Condicao) {
   ];
   for (const f of tentativas) {
     const xs = rs.filter(f).map((r) => r.tempoViagemMin).sort((a, b) => a - b);
-    if (xs.length >= 8) {
-      // Mediana: robusta a respostas exageradas.
-      return { min: xs[Math.floor(xs.length / 2)], amostras: xs.length };
-    }
+    if (xs.length >= 5) return { min: xs[Math.floor(xs.length / 2)], amostras: xs.length };
   }
-  return { min: linha.tempoBaseMin, amostras: 0 };
+  return { min: null, amostras: 0 };
 }
 
 export function cenarios(b: Banco, linha: Linha) {
@@ -161,22 +161,22 @@ export function cenarios(b: Banco, linha: Linha) {
   ].map((x) => ({ rotulo: x.rotulo, ...estimarTempo(b, linha, x.c) }));
 }
 
-/** Índice de tempo de viagem: observado nas últimas 2h ÷ esperado para a condição atual. */
+/** Índice de tempo de viagem: observado nas últimas 2h ÷ esperado (mediana histórica) para a condição atual. */
 export function indiceTempoViagem(b: Banco, agora = Date.now()) {
   const r2 = desde(b.respostas, 2 * H, agora);
   const ag = new Date(agora);
-  return LINHAS.map((l) => {
+  return b.linhas.map((l) => {
     const rs = r2.filter((r) => r.linhaId === l.id);
     const climaAtual = rs.at(-1)?.clima ?? "sol";
     const esperado = estimarTempo(b, l, { clima: climaAtual, fds: local(ag).fds, periodo: periodoDe(ag) }).min;
     const observado = media(rs.map((r) => r.tempoViagemMin));
-    const indice = observado ? observado / esperado : null;
+    const indice = observado && esperado ? observado / esperado : null;
     const ultimo = rs.at(-1);
     return {
       linha: l, esperado, observado: observado && Math.round(observado), indice,
       amostras: rs.length,
       status: (indice === null ? "atencao" : indice <= 1.15 ? "ok" : indice <= 1.5 ? "atencao" : "critico") as Status,
-      alerta: ultimo && ultimo.tempoViagemMin > esperado * 2 ? `Relato recente de ${ultimo.tempoViagemMin} min` : null,
+      alerta: ultimo && esperado && ultimo.tempoViagemMin > esperado * 2 ? `Relato recente de ${ultimo.tempoViagemMin} min` : null,
     };
   });
 }
@@ -185,18 +185,25 @@ export function indiceTempoViagem(b: Banco, agora = Date.now()) {
 
 export interface PrevisaoClima { periodo: Periodo; probChuva: number }
 
+/**
+ * Só para linhas com intervalo e frota cadastrados e histórico real suficiente.
+ * Efeito do clima = tempo estimado na condição prevista ÷ tempo em tempo seco no mesmo período.
+ */
 export function recomendacoes(b: Banco, previsao: PrevisaoClima[], amanha: Date) {
   const fds = local(amanha).fds;
-  return LINHAS.map((l) => {
+  return b.linhas.filter((l) => l.headwayMin && l.frota).map((l) => {
     const porPeriodo = previsao.map((p) => {
       const clima: Clima = p.probChuva >= 50 ? "chuva" : "sol";
       const est = estimarTempo(b, l, { clima, fds, periodo: p.periodo });
-      const ratio = est.min / l.tempoBaseMin;
-      // Ciclo = ida + volta + 10 min de terminal; frota para manter o headway.
-      const headway = ratio > 1.3 ? Math.max(4, Math.round(l.headwayMin / Math.min(ratio, 1.5))) : l.headwayMin;
-      const ciclo = est.min * 2 + 10;
-      const frota = Math.ceil(ciclo / headway);
-      return { periodo: p.periodo, clima, probChuva: p.probChuva, tempoMin: est.min, headway, frota, delta: frota - l.frota };
+      const seco = estimarTempo(b, l, { clima: "sol", fds, periodo: p.periodo });
+      if (est.min === null || seco.min === null) {
+        return { periodo: p.periodo, clima, probChuva: p.probChuva, tempoMin: null, headway: null, frota: null, delta: null };
+      }
+      const ratio = est.min / seco.min;
+      const headway = ratio > 1.3 ? Math.max(4, Math.round(l.headwayMin! / Math.min(ratio, 1.5))) : l.headwayMin!;
+      // Ciclo = ida + volta + 10 min de terminal; frota para manter o intervalo.
+      const frota = Math.ceil((est.min * 2 + 10) / headway);
+      return { periodo: p.periodo, clima, probChuva: p.probChuva, tempoMin: est.min, headway, frota, delta: frota - l.frota! };
     });
     return { linha: l, porPeriodo };
   });

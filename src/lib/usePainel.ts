@@ -7,12 +7,13 @@ import type { Linha, Periodo, Resposta } from "./types";
 export interface DadosPainel {
   geradoEm: string;
   kpis: Kpi[];
-  tempoViagem: { linha: Linha; esperado: number; observado: number | null; indice: number | null; amostras: number; status: Status; alerta: string | null }[];
-  cenarios: { linha: Linha; cenarios: { rotulo: string; min: number; amostras: number }[] }[];
+  tempoViagem: { linha: Linha; esperado: number | null; observado: number | null; indice: number | null; amostras: number; status: Status; alerta: string | null }[];
+  cenarios: { linha: Linha; cenarios: { rotulo: string; min: number | null; amostras: number }[] }[];
+  fonteLinhas: { fonte: string; coletadoEm: string };
   previsao: {
     fonte: "open-meteo" | "padrao";
     periodos: { periodo: Periodo; probChuva: number }[];
-    recomendacoes: { linha: Linha; porPeriodo: { periodo: Periodo; clima: string; probChuva: number; tempoMin: number; headway: number; frota: number; delta: number }[] }[];
+    recomendacoes: { linha: Linha; porPeriodo: { periodo: Periodo; clima: string; probChuva: number; tempoMin: number | null; headway: number | null; frota: number | null; delta: number | null }[] }[];
   };
   confiabilidade: { pct: number; nivel: "alta" | "media" | "baixa"; simulados: number; fatores: { nome: string; valor: number; peso: number; detalhe: string }[] };
   plataformas: { plataforma: string; ocupacao: number | null; ocorrencias: number; relatos: number; status: Status; linhas: string[] }[];

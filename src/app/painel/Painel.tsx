@@ -17,7 +17,8 @@ export function Painel() {
 
   if (!dados) return <p className={s.loading}>{erro ? "Sem conexão com o servidor." : "Carregando indicadores…"}</p>;
   const { kpis, tempoViagem, cenarios, previsao, ultimas, totais, confiabilidade: conf } = dados;
-  const alertas = tempoViagem.filter((t) => t.status === "critico" || t.alerta);
+  const alertas = tempoViagem.filter((t) => t.amostras > 0 && (t.status === "critico" || t.alerta));
+  const comRelato = tempoViagem.filter((t) => t.amostras > 0);
 
   return (
     <div className={s.grid}>
@@ -55,7 +56,7 @@ export function Painel() {
         <div className={s.alert} role="status">
           <strong>Atenção no tempo de viagem</strong>
           {alertas.map((a) => (
-            <span key={a.linha.id}>Linha {a.linha.codigo}: {a.alerta ?? `${a.observado} min observado vs ${a.esperado} min esperado`}</span>
+            <span key={a.linha.id}>Linha {a.linha.codigo}: {a.alerta ?? `${a.observado} min observado vs ${a.esperado ?? "–"} min esperado`}</span>
           ))}
         </div>
       )}
@@ -95,16 +96,20 @@ export function Painel() {
             <p className="eyebrow">Índice de tempo de viagem · últimas 2h</p>
             <h2>Observado pelos passageiros vs. esperado para a condição atual</h2>
           </div>
+          <span className={s.muted}>{comRelato.length} de {tempoViagem.length} linhas com relato nas últimas 2h</span>
         </div>
+        {comRelato.length === 0 ? (
+          <p className={s.muted}>Nenhum relato real nas últimas 2 horas. Assim que passageiros responderem pelo QR Code, as linhas aparecem aqui.</p>
+        ) : (
         <div className="scroll-x">
           <table>
             <thead><tr><th>Linha</th><th>Plat.</th><th>Esperado</th><th>Observado</th><th style={{ width: "34%" }}>Índice</th><th>Relatos</th></tr></thead>
             <tbody>
-              {tempoViagem.map((t) => (
+              {comRelato.map((t) => (
                 <tr key={t.linha.id}>
                   <td><strong className="num">{t.linha.codigo}</strong> <span className={s.muted}>{t.linha.nome}</span></td>
-                  <td className="num">{t.linha.plataforma}</td>
-                  <td className="num">{t.esperado} min</td>
+                  <td className="num">{t.linha.plataforma ?? "–"}</td>
+                  <td className="num">{t.esperado ? `${t.esperado} min` : <span className={s.muted}>sem histórico</span>}</td>
                   <td className="num">{t.observado ? `${t.observado} min` : "–"}</td>
                   <td>
                     <div className={s.bar}>
@@ -119,6 +124,7 @@ export function Painel() {
             </tbody>
           </table>
         </div>
+        )}
       </section>
 
       <section className={`card ${s.block}`}>
@@ -135,8 +141,8 @@ export function Painel() {
           {cenarios[linhaSel].cenarios.map((c) => (
             <div key={c.rotulo}>
               <span className="eyebrow">{c.rotulo}</span>
-              <span className={`num ${s.scenN}`}>{c.min}<small>min</small></span>
-              <span className={s.muted}>{c.amostras ? `mediana de ${c.amostras} relatos` : "tempo de referência"}</span>
+              <span className={`num ${s.scenN}`}>{c.min ?? "–"}{c.min !== null && <small>min</small>}</span>
+              <span className={s.muted}>{c.amostras ? `mediana de ${c.amostras} relatos` : "menos de 5 relatos reais"}</span>
             </div>
           ))}
         </div>
@@ -169,6 +175,9 @@ export function Painel() {
           </div>
           <span className={s.muted}>Ciclo = ida + volta estimadas + 10 min de terminal</span>
         </div>
+        {previsao.recomendacoes.length === 0 ? (
+          <p className={s.muted}>Nenhuma linha tem intervalo e frota cadastrados. Cadastre em Administração → Linhas para o painel calcular a recomendação a partir dos relatos reais.</p>
+        ) : (
         <div className="scroll-x">
           <table>
             <thead>
@@ -178,13 +187,15 @@ export function Painel() {
               {previsao.recomendacoes.map((r) => (
                 <tr key={r.linha.id}>
                   <td><strong className="num">{r.linha.codigo}</strong> <span className={s.muted}>{r.linha.nome}</span></td>
-                  <td className="num">{r.linha.frota} · {r.linha.headwayMin} min</td>
+                  <td className="num">{r.linha.frota} · a cada {r.linha.headwayMin} min</td>
                   {r.porPeriodo.map((p) => (
                     <td key={p.periodo} className="num">
+                      {p.tempoMin === null ? <span className={s.muted}>sem histórico</span> : (<>
                       <div>{p.tempoMin} min de viagem</div>
                       <div className={s.muted}>a cada {p.headway} min · {p.frota} ônibus</div>
-                      {p.delta > 0 && <span className={s.delta}>+{p.delta}</span>}
-                      {p.delta < 0 && <span className={s.deltaNeg}>{p.delta}</span>}
+                      {p.delta! > 0 && <span className={s.delta}>+{p.delta}</span>}
+                      {p.delta! < 0 && <span className={s.deltaNeg}>{p.delta}</span>}
+                      </>)}
                     </td>
                   ))}
                 </tr>
@@ -192,6 +203,7 @@ export function Painel() {
             </tbody>
           </table>
         </div>
+        )}
       </section>
 
       <section className={`card ${s.block} ${s.wide}`}>

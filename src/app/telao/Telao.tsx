@@ -14,6 +14,8 @@ export function Telao() {
     return () => clearInterval(id);
   }, []);
   const chuva = dados?.previsao.periodos.some((p) => p.probChuva >= 50);
+  // Só linhas com plataforma cadastrada ou relato recente — o resto não tem o que mostrar.
+  const linhas = dados?.tempoViagem.filter((t) => t.linha.plataforma || t.amostras > 0).slice(0, 8) ?? [];
 
   return (
     <main className={s.tela}>
@@ -27,13 +29,14 @@ export function Telao() {
 
       <div className={s.board}>
         <div className={`${s.row} ${s.th}`}><span>Linha</span><span>Destino</span><span>Plat.</span><span>Viagem</span><span>Situação</span></div>
-        {dados?.tempoViagem.map((t) => (
+        {dados && linhas.length === 0 && <p className={s.vazio}>Aguardando os primeiros relatos dos passageiros. Avalie sua viagem pelo QR Code.</p>}
+        {linhas.map((t) => (
           <div key={t.linha.id} className={s.row}>
             <span className={s.code}>{t.linha.codigo}</span>
             <span className={s.dest}>{t.linha.nome}</span>
-            <span className={s.plat}>{t.linha.plataforma}</span>
-            <span className={s.min}>{t.observado ?? t.esperado}<small>min</small></span>
-            <span className={s.st} data-s={t.status}><i />{ESTADO[t.status]}</span>
+            <span className={s.plat}>{t.linha.plataforma ?? "–"}</span>
+            <span className={s.min}>{t.observado ?? t.esperado ?? "–"}{(t.observado ?? t.esperado) !== null && <small>min</small>}</span>
+            <span className={s.st} data-s={t.amostras ? t.status : "atencao"}><i />{t.amostras ? ESTADO[t.status] : "Sem relatos"}</span>
           </div>
         ))}
       </div>
