@@ -1,6 +1,6 @@
 .road { position: relative; border-radius: var(--r); overflow: hidden; height: clamp(180px, 26vw, 300px); }
 .svg { width: 100%; height: 100%; display: block; }
-.lane { stroke: #e9e4d6; stroke-width: 3; stroke-dasharray: 38 30; animation: lane 1.2s linear infinite; opacity: .7; }
+.lane { stroke: #dbe0e1; stroke-width: 3; stroke-dasharray: 38 30; animation: lane 1.2s linear infinite; opacity: .7; }
 @keyframes lane { to { stroke-dashoffset: -68; } }
 
 .bus { animation-timing-function: linear; animation-iteration-count: infinite; }
@@ -21,12 +21,12 @@
 
 .light {
   position: absolute; right: 18px; top: 18px; display: grid; gap: 6px; padding: 8px;
-  background: #0d0c0a; border-radius: 8px; border: 1px solid #3a382f;
+  background: #000000; border-radius: 8px; border: 1px solid #2e2924;
 }
-.light span { width: 14px; height: 14px; border-radius: 50%; background: #33312b; }
+.light span { width: 14px; height: 14px; border-radius: 50%; background: #2e2924; }
 .r { animation: lr 14s infinite; }
 .y { animation: ly 14s infinite; }
 .g { animation: lg 14s infinite; }
-@keyframes lr { 0%, 34% { background: #33312b; } 35%, 60% { background: #e5483a; box-shadow: 0 0 10px #e5483a; } 61%, 100% { background: #33312b; } }
-@keyframes ly { 0%, 29% { background: #33312b; } 30%, 34% { background: #f2b705; } 35%, 100% { background: #33312b; } }
-@keyframes lg { 0%, 29% { background: #3fae74; box-shadow: 0 0 10px #3fae74; } 30%, 60% { background: #33312b; } 61%, 100% { background: #3fae74; } }
+@keyframes lr { 0%, 34% { background: #2e2924; } 35%, 60% { background: #ca3f16; box-shadow: 0 0 10px #ca3f16; } 61%, 100% { background: #2e2924; } }
+@keyframes ly { 0%, 29% { background: #2e2924; } 30%, 34% { background: #ff9408; } 35%, 100% { background: #2e2924; } }
+@keyframes lg { 0%, 29% { background: #dbe0e1; box-shadow: 0 0 10px #dbe0e1; } 30%, 60% { background: #2e2924; } 61%, 100% { background: #dbe0e1; } }

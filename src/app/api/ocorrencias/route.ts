@@ -8,7 +8,7 @@ const TIPOS: Ocorrencia["tipo"][] = ["seguranca", "lotacao", "acessibilidade", "
 
 export async function GET() {
   await connection();
-  return Response.json(banco().ocorrencias.slice(-30).reverse());
+  return Response.json((await banco()).ocorrencias.slice(-30).reverse());
 }
 
 export async function POST(req: Request) {
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   if (!TIPOS.includes(b?.tipo) || typeof b?.local !== "string" || !b.local.trim()) {
     return Response.json({ erro: "Informe tipo e local." }, { status: 400 });
   }
-  const o = adicionarOcorrencia({
+  const o = await adicionarOcorrencia({
     tipo: b.tipo, local: b.local.trim().slice(0, 60),
     descricao: String(b.descricao ?? "").trim().slice(0, 280), autor: NOME_PAPEL[papel],
   });

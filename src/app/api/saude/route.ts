@@ -1,10 +1,10 @@
 import { connection } from "next/server";
 import { previsaoAmanha } from "@/lib/clima";
-import { banco } from "@/lib/store";
+import { banco, MODO_BANCO } from "@/lib/store";
 
 export async function GET() {
   await connection();
-  const b = banco();
+  const b = await banco();
   const agora = Date.now();
   const ultimaHora = b.respostas.filter((r) => agora - Date.parse(r.criadoEm) < 3600_000).length;
   const ultimaReal = b.respostas.filter((r) => !r.simulado).at(-1)?.criadoEm ?? null;
@@ -14,7 +14,7 @@ export async function GET() {
   return Response.json({
     em: new Date(agora).toISOString(),
     iniciadoEm: b.iniciadoEm,
-    banco: { modo: process.env.DATABASE_URL ? "postgres" : "memoria", respostas: b.respostas.length, ocorrencias: b.ocorrencias.length, contagens: b.contagens.length },
+    banco: { modo: MODO_BANCO, respostas: b.respostas.length, ocorrencias: b.ocorrencias.length, contagens: b.contagens.length },
     coleta: { ultimaHora, ultimaReal },
     integracoes: [
       { nome: "Previsão do tempo (Open-Meteo)", estado: clima.fonte === "open-meteo" ? "ok" : "falha", detalhe: clima.erro ?? `${latClima} ms` },

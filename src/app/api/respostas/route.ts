@@ -25,5 +25,5 @@ export async function POST(req: Request) {
     reclamacao: typeof b.reclamacao === "string" && b.reclamacao.trim() ? b.reclamacao.trim().slice(0, 280) : null,
     presenciouOcorrencia: Boolean(b.presenciouOcorrencia), clima, transito,
   };
-  return Response.json(adicionarResposta(r), { status: 201 });
+  return Response.json(await adicionarResposta(r), { status: 201 });
 }

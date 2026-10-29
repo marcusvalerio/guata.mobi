@@ -1,18 +1,19 @@
 :root {
-  --paper: #f3f0e8;
-  --paper-2: #ebe7dc;
-  --card: #fbfaf6;
-  --ink: #14130f;
-  --ink-2: #3a382f;
-  --muted: #6e695c;
-  --line: #d8d2c3;
-  --signal: #f2b705;
-  --signal-ink: #3d2f00;
-  --go: #1d7348;
-  --warn: #b86e00;
-  --stop: #b1261c;
-  --asphalt: #1c1b18;
-  --asphalt-2: #2a2924;
+  /* Paleta Guatá: preto e branco são a base; laranja sinaliza; os vermelhos são estado. */
+  --paper: #f3f4f5;      /* Chef's Hat */
+  --paper-2: #dbe0e1;    /* Drifting Cloud */
+  --card: #ffffff;
+  --ink: #100c08;        /* Smoky Black */
+  --ink-2: #3b3631;
+  --muted: #6b6661;
+  --line: #d3d8da;
+  --signal: #ff9408;     /* Merin's Fire */
+  --signal-ink: #100c08;
+  --go: #100c08;
+  --warn: #ca3f16;       /* Sauce Piquante */
+  --stop: #95122c;       /* Bacchic Burgundy */
+  --asphalt: #100c08;
+  --asphalt-2: #241f1a;
 
   --font-ui: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-text: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -24,29 +25,29 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #12110e;
-    --paper-2: #1a1915;
-    --card: #1d1c18;
-    --ink: #f1ede3;
-    --ink-2: #cfc9bb;
-    --muted: #9a9485;
-    --line: #34322b;
-    --go: #3fae74;
-    --warn: #e39a2a;
-    --stop: #ec5a4c;
+    --paper: #100c08;
+    --paper-2: #1a1612;
+    --card: #17130f;
+    --ink: #f3f4f5;
+    --ink-2: #dbe0e1;
+    --muted: #a19c97;
+    --line: #2e2924;
+    --go: #f3f4f5;
+    --warn: #ff9408;
+    --stop: #e2573a;
   }
 }
 :root[data-theme="dark"] {
-  --paper: #12110e;
-  --paper-2: #1a1915;
-  --card: #1d1c18;
-  --ink: #f1ede3;
-  --ink-2: #cfc9bb;
-  --muted: #9a9485;
-  --line: #34322b;
-  --go: #3fae74;
-  --warn: #e39a2a;
-  --stop: #ec5a4c;
+  --paper: #100c08;
+  --paper-2: #1a1612;
+  --card: #17130f;
+  --ink: #f3f4f5;
+  --ink-2: #dbe0e1;
+  --muted: #a19c97;
+  --line: #2e2924;
+  --go: #f3f4f5;
+  --warn: #ff9408;
+  --stop: #e2573a;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }

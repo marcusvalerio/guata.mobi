@@ -16,7 +16,7 @@ export function Road() {
 
         {/* Faixa de pedestres */}
         {Array.from({ length: 9 }).map((_, i) => (
-          <rect key={i} x={860} y={14 + i * 31.5} width={46} height={18} fill="#e9e4d6" opacity="0.85" />
+          <rect key={i} x={860} y={14 + i * 31.5} width={46} height={18} fill="#dbe0e1" opacity="0.85" />
         ))}
 
         <g className={`${s.bus} ${s.fast}`}><Bus y={30} label="110" /></g>
@@ -35,12 +35,12 @@ export function Road() {
 function Bus({ y, label }: { y: number; label: string }) {
   return (
     <g transform={`translate(0 ${y})`}>
-      <rect width="150" height="42" rx="5" fill="#f3f0e8" />
-      <rect x="126" y="5" width="18" height="32" rx="2" fill="#2a2924" />
-      {[14, 40, 66, 92].map((x) => <rect key={x} x={x} y="6" width="20" height="5" rx="1" fill="#2a2924" opacity=".7" />)}
-      {[14, 40, 66, 92].map((x) => <rect key={x} x={x} y="31" width="20" height="5" rx="1" fill="#2a2924" opacity=".7" />)}
+      <rect width="150" height="42" rx="5" fill="#f3f4f5" />
+      <rect x="126" y="5" width="18" height="32" rx="2" fill="#241f1a" />
+      {[14, 40, 66, 92].map((x) => <rect key={x} x={x} y="6" width="20" height="5" rx="1" fill="#241f1a" opacity=".7" />)}
+      {[14, 40, 66, 92].map((x) => <rect key={x} x={x} y="31" width="20" height="5" rx="1" fill="#241f1a" opacity=".7" />)}
       <rect x="0" y="16" width="44" height="10" rx="1" fill="var(--signal)" />
-      <text x="6" y="24.5" fontSize="9" fontFamily="var(--font-mono)" fill="#3d2f00" fontWeight="600">{label}</text>
+      <text x="6" y="24.5" fontSize="9" fontFamily="var(--font-mono)" fill="#100c08" fontWeight="600">{label}</text>
     </g>
   );
 }

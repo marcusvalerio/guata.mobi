@@ -1,4 +1,4 @@
-import { banco, LINHAS, PLATAFORMAS } from "./store";
+import { LINHAS, PLATAFORMAS, type Banco } from "./store";
 import { local, periodoDe } from "./tempo";
 import type { Clima, Linha, Periodo, Resposta } from "./types";
 
@@ -38,8 +38,7 @@ const faixa = (v: number | null, bom: number, ruim: number): Status => {
 };
 
 /** Seis dimensões da Tabela 1 (Gaze et al., 2026). */
-export function calcularKpis(agora = Date.now()): Kpi[] {
-  const b = banco();
+export function calcularKpis(b: Banco, agora = Date.now()): Kpi[] {
   const r24 = desde(b.respostas, 24 * H, agora);
   const r3 = desde(b.respostas, 3 * H, agora);
 
@@ -121,8 +120,8 @@ export function calcularKpis(agora = Date.now()): Kpi[] {
 export interface Condicao { clima: Clima; fds: boolean; periodo: Periodo }
 
 /** Média histórica para a linha na condição; afrouxa o filtro se houver poucas amostras. */
-export function estimarTempo(linha: Linha, c: Condicao) {
-  const rs = banco().respostas.filter((r) => r.linhaId === linha.id);
+export function estimarTempo(b: Banco, linha: Linha, c: Condicao) {
+  const rs = b.respostas.filter((r) => r.linhaId === linha.id);
   const climaDe = (r: Resposta) => (r.clima === "chuva" ? "chuva" : "seco");
   const alvo = c.clima === "chuva" ? "chuva" : "seco";
   const tentativas: ((r: Resposta) => boolean)[] = [
@@ -140,23 +139,23 @@ export function estimarTempo(linha: Linha, c: Condicao) {
   return { min: linha.tempoBaseMin, amostras: 0 };
 }
 
-export function cenarios(linha: Linha) {
+export function cenarios(b: Banco, linha: Linha) {
   return [
     { rotulo: "Dia útil, sol", c: { clima: "sol", fds: false, periodo: "tarde" } as Condicao },
     { rotulo: "Dia útil, chuva", c: { clima: "chuva", fds: false, periodo: "tarde" } as Condicao },
     { rotulo: "Fim de semana", c: { clima: "sol", fds: true, periodo: "tarde" } as Condicao },
     { rotulo: "Madrugada", c: { clima: "sol", fds: false, periodo: "madrugada" } as Condicao },
-  ].map((x) => ({ rotulo: x.rotulo, ...estimarTempo(linha, x.c) }));
+  ].map((x) => ({ rotulo: x.rotulo, ...estimarTempo(b, linha, x.c) }));
 }
 
 /** Índice de tempo de viagem: observado nas últimas 2h ÷ esperado para a condição atual. */
-export function indiceTempoViagem(agora = Date.now()) {
-  const r2 = desde(banco().respostas, 2 * H, agora);
+export function indiceTempoViagem(b: Banco, agora = Date.now()) {
+  const r2 = desde(b.respostas, 2 * H, agora);
   const ag = new Date(agora);
   return LINHAS.map((l) => {
     const rs = r2.filter((r) => r.linhaId === l.id);
     const climaAtual = rs.at(-1)?.clima ?? "sol";
-    const esperado = estimarTempo(l, { clima: climaAtual, fds: local(ag).fds, periodo: periodoDe(ag) }).min;
+    const esperado = estimarTempo(b, l, { clima: climaAtual, fds: local(ag).fds, periodo: periodoDe(ag) }).min;
     const observado = media(rs.map((r) => r.tempoViagemMin));
     const indice = observado ? observado / esperado : null;
     const ultimo = rs.at(-1);
@@ -173,12 +172,12 @@ export function indiceTempoViagem(agora = Date.now()) {
 
 export interface PrevisaoClima { periodo: Periodo; probChuva: number }
 
-export function recomendacoes(previsao: PrevisaoClima[], amanha: Date) {
+export function recomendacoes(b: Banco, previsao: PrevisaoClima[], amanha: Date) {
   const fds = local(amanha).fds;
   return LINHAS.map((l) => {
     const porPeriodo = previsao.map((p) => {
       const clima: Clima = p.probChuva >= 50 ? "chuva" : "sol";
-      const est = estimarTempo(l, { clima, fds, periodo: p.periodo });
+      const est = estimarTempo(b, l, { clima, fds, periodo: p.periodo });
       const ratio = est.min / l.tempoBaseMin;
       // Ciclo = ida + volta + 10 min de terminal; frota para manter o headway.
       const headway = ratio > 1.3 ? Math.max(4, Math.round(l.headwayMin / Math.min(ratio, 1.5))) : l.headwayMin;

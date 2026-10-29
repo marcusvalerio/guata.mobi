@@ -1,10 +1,10 @@
 import type { Clima, Contagem, Linha, Ocorrencia, Resposta, Transito, Usuario } from "./types";
+import { neon } from "@neondatabase/serverless";
 import { local, periodoDe } from "./tempo";
 
 /**
- * Armazenamento em memória para o protótipo. A interface (listar/adicionar)
- * é a mesma que o adaptador de banco (Supabase/Postgres) vai implementar,
- * então as telas não mudam quando o banco real for ligado.
+ * Dados do terminal. Em produção ficam no Neon (Postgres); sem DATABASE_URL,
+ * em memória — útil para rodar localmente sem banco.
  */
 
 // Linhas de exemplo — substituir pelo GTFS do MOBNIT quando disponível.
@@ -26,7 +26,7 @@ export const USUARIOS_DEMO: Usuario[] = [
   { id: "u4", nome: "Operador de Plataforma", email: "operador@terminal.exemplo", papel: "operador" },
 ];
 
-interface Banco {
+export interface Banco {
   respostas: Resposta[];
   ocorrencias: Ocorrencia[];
   contagens: Contagem[];
@@ -111,39 +111,101 @@ function simular(dias: number): Banco {
   return { respostas, ocorrencias, contagens, iniciadoEm: new Date().toISOString(), erros: [] };
 }
 
-export function banco(): Banco {
-  if (!g.__guata) g.__guata = simular(28);
-  return g.__guata;
+/* ---------- Persistência: Neon (Postgres) quando DATABASE_URL existe, memória senão ---------- */
+
+const URL_BANCO = process.env.DATABASE_URL;
+export const MODO_BANCO = URL_BANCO ? "postgres" : "memoria";
+const sql = URL_BANCO ? neon(URL_BANCO) : null;
+const JANELA_DIAS = 35;
+
+const iso = <T extends { criadoEm: unknown }>(rows: Record<string, unknown>[]) =>
+  rows.map((r) => ({ ...r, criadoEm: new Date(r.criadoEm as string).toISOString() })) as unknown as T[];
+
+async function inserir(tabela: "respostas" | "ocorrencias" | "contagens", linhas: object[]) {
+  if (!sql || !linhas.length) return;
+  // Lotes para não estourar o tamanho da requisição HTTP do driver.
+  for (let i = 0; i < linhas.length; i += 1500) {
+    const lote = JSON.stringify(linhas.slice(i, i + 1500));
+    if (tabela === "respostas") await sql`insert into respostas select * from json_populate_recordset(null::respostas, ${lote}::json) on conflict do nothing`;
+    if (tabela === "ocorrencias") await sql`insert into ocorrencias select * from json_populate_recordset(null::ocorrencias, ${lote}::json) on conflict do nothing`;
+    if (tabela === "contagens") await sql`insert into contagens select * from json_populate_recordset(null::contagens, ${lote}::json) on conflict do nothing`;
+  }
 }
 
-export function adicionarResposta(r: Omit<Resposta, "id" | "criadoEm" | "simulado">) {
+async function semear() {
+  const sim = simular(28);
+  await inserir("respostas", sim.respostas);
+  await inserir("ocorrencias", sim.ocorrencias);
+  await inserir("contagens", sim.contagens);
+  await sql!`insert into meta values ('semeadoEm', ${new Date().toISOString()}) on conflict (chave) do update set valor = excluded.valor`;
+}
+
+export async function banco(): Promise<Banco> {
+  if (!sql) {
+    if (!g.__guata) g.__guata = simular(28);
+    return g.__guata;
+  }
+  const [semeado] = await sql`select valor from meta where chave = 'semeadoEm'`;
+  if (!semeado) await semear();
+  const desde = new Date(Date.now() - JANELA_DIAS * 86400_000).toISOString();
+  const [respostas, ocorrencias, contagens, erros, ini] = await Promise.all([
+    sql`select * from respostas where "criadoEm" > ${desde} order by "criadoEm"`,
+    sql`select * from ocorrencias where "criadoEm" > ${desde} order by "criadoEm"`,
+    sql`select * from contagens where "criadoEm" > ${desde} order by "criadoEm"`,
+    sql`select em, msg from erros order by id desc limit 20`,
+    sql`select valor from meta where chave = 'semeadoEm'`,
+  ]);
+  return {
+    respostas: iso<Resposta>(respostas),
+    ocorrencias: iso<Ocorrencia>(ocorrencias),
+    contagens: iso<Contagem>(contagens),
+    erros: erros.map((e) => ({ em: new Date(e.em).toISOString(), msg: e.msg })).reverse(),
+    iniciadoEm: ini[0]?.valor ?? new Date().toISOString(),
+  };
+}
+
+export async function adicionarResposta(r: Omit<Resposta, "id" | "criadoEm" | "simulado">) {
   const nova: Resposta = { ...r, id: uid(), criadoEm: new Date().toISOString(), simulado: false };
-  banco().respostas.push(nova);
+  if (sql) await inserir("respostas", [nova]);
+  else (await banco()).respostas.push(nova);
   return nova;
 }
 
-export function adicionarOcorrencia(o: Omit<Ocorrencia, "id" | "criadoEm" | "simulado">) {
+export async function adicionarOcorrencia(o: Omit<Ocorrencia, "id" | "criadoEm" | "simulado">) {
   const nova: Ocorrencia = { ...o, id: uid(), criadoEm: new Date().toISOString(), simulado: false };
-  banco().ocorrencias.push(nova);
+  if (sql) await inserir("ocorrencias", [nova]);
+  else (await banco()).ocorrencias.push(nova);
   return nova;
 }
 
-export function adicionarContagem(c: Omit<Contagem, "id" | "criadoEm" | "simulado">) {
+export async function adicionarContagem(c: Omit<Contagem, "id" | "criadoEm" | "simulado">) {
   const nova: Contagem = { ...c, id: uid(), criadoEm: new Date().toISOString(), simulado: false };
-  banco().contagens.push(nova);
+  if (sql) await inserir("contagens", [nova]);
+  else (await banco()).contagens.push(nova);
   return nova;
 }
 
-export function registrarErro(msg: string) {
-  banco().erros.push({ em: new Date().toISOString(), msg });
+export async function registrarErro(msg: string) {
+  if (sql) await sql`insert into erros (msg) values (${msg.slice(0, 500)})`.catch(() => {});
+  else (await banco()).erros.push({ em: new Date().toISOString(), msg });
 }
 
-export function reiniciarSimulacao() {
-  g.__guata = simular(28);
+export async function reiniciarSimulacao() {
+  if (!sql) { g.__guata = simular(28); return; }
+  await sql`delete from respostas where simulado`;
+  await sql`delete from ocorrencias where simulado`;
+  await sql`delete from contagens where simulado`;
+  await semear();
 }
 
-export function removerSimulados() {
-  const b = banco();
+export async function removerSimulados() {
+  if (sql) {
+    await sql`delete from respostas where simulado`;
+    await sql`delete from ocorrencias where simulado`;
+    await sql`delete from contagens where simulado`;
+    return;
+  }
+  const b = await banco();
   b.respostas = b.respostas.filter((x) => !x.simulado);
   b.ocorrencias = b.ocorrencias.filter((x) => !x.simulado);
   b.contagens = b.contagens.filter((x) => !x.simulado);

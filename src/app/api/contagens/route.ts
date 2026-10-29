@@ -16,5 +16,5 @@ export async function POST(req: Request) {
   if (!FONTES.includes(b?.fonte) || !Number.isFinite(n) || n < 0 || !(janela > 0 && janela <= 240)) {
     return Response.json({ erro: "Contagem inválida." }, { status: 400 });
   }
-  return Response.json(adicionarContagem({ fonte: b.fonte, local: String(b.local ?? "Entrada principal").slice(0, 60), passageiros: Math.round(n), janelaMin: janela }), { status: 201 });
+  return Response.json(await adicionarContagem({ fonte: b.fonte, local: String(b.local ?? "Entrada principal").slice(0, 60), passageiros: Math.round(n), janelaMin: janela }), { status: 201 });
 }
