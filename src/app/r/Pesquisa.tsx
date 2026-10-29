@@ -47,12 +47,23 @@ export function Pesquisa({ linhas, plataforma }: { linhas: Linha[]; plataforma: 
     }).catch(() => {});
   }, []);
 
-  const completo = linhaId && tempo !== null && espera !== null && noHorario !== null && integracao && lotacao && clima && transito && satisfacao;
+  const respondidas: [number, boolean][] = [
+    [1, !!linhaId], [2, tempo !== null], [3, espera !== null], [4, noHorario !== null],
+    [5, !!integracao], [6, !!lotacao], [7, !!clima && !!transito], [8, !!satisfacao],
+  ];
+  const faltam = respondidas.filter(([, ok]) => !ok).map(([n]) => n);
+  const completo = faltam.length === 0;
+  const [mostrarFaltas, setMostrarFaltas] = useState(false);
+  const falta = (n: number) => mostrarFaltas && faltam.includes(n);
   const feitas = [linhaId, tempo, espera, noHorario, integracao, lotacao, clima && transito, satisfacao].filter((x) => x !== null && x !== "").length;
 
   async function enviar(e: React.FormEvent) {
     e.preventDefault();
-    if (!completo) return;
+    if (!completo) {
+      setMostrarFaltas(true);
+      document.getElementById(`q${faltam[0]}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
     setEstado("enviando");
     const res = await fetch("/api/respostas", {
       method: "POST",
@@ -91,7 +102,7 @@ export function Pesquisa({ linhas, plataforma }: { linhas: Linha[]; plataforma: 
       <p className={s.sub}>Anônimo, sem cadastro. Leva menos de um minuto.</p>
 
       <form onSubmit={enviar} className={s.form}>
-        <label className="field">
+        <label className={`field ${falta(1) ? s.falta : ""}`} id="q1">
           <span>1. Qual linha?</span>
           <select className="input" value={linhaId} onChange={(e) => setLinha(e.target.value)} required>
             <option value="">Escolha a linha</option>
@@ -105,22 +116,22 @@ export function Pesquisa({ linhas, plataforma }: { linhas: Linha[]; plataforma: 
           </select>
         </label>
 
-        <fieldset className="field">
+        <fieldset className={`field ${falta(2) ? s.falta : ""}`} id="q2">
           <span>2. Quanto tempo durou a viagem?</span>
           <Chips ops={TEMPOS.map((m) => ({ v: m, t: m >= 120 ? "2h ou mais" : `${m} min` }))} valor={tempo} set={setTempo} />
         </fieldset>
 
-        <fieldset className="field">
+        <fieldset className={`field ${falta(3) ? s.falta : ""}`} id="q3">
           <span>3. Quanto tempo esperou o ônibus?</span>
           <Chips ops={[0, 5, 10, 15, 20, 30, 45].map((m) => ({ v: m, t: m === 0 ? "Não esperei" : `${m} min` }))} valor={espera} set={setEspera} />
         </fieldset>
 
-        <fieldset className="field">
+        <fieldset className={`field ${falta(4) ? s.falta : ""}`} id="q4">
           <span>4. O ônibus saiu no horário?</span>
           <Chips ops={[{ v: true, t: "Sim" }, { v: false, t: "Não" }]} valor={noHorario} set={setNoHorario} />
         </fieldset>
 
-        <fieldset className="field">
+        <fieldset className={`field ${falta(5) ? s.falta : ""}`} id="q5">
           <span>5. Vai fazer ou fez integração?</span>
           <Chips ops={[{ v: "nenhuma" as const, t: "Não" }, { v: "barcas" as const, t: "Barcas" }, { v: "municipal" as const, t: "Ônibus municipal" }]} valor={integracao} set={setIntegracao} />
           {integracao && integracao !== "nenhuma" && (
@@ -128,19 +139,19 @@ export function Pesquisa({ linhas, plataforma }: { linhas: Linha[]; plataforma: 
           )}
         </fieldset>
 
-        <fieldset className="field">
+        <fieldset className={`field ${falta(6) ? s.falta : ""}`} id="q6">
           <span>6. Como estava a plataforma?</span>
           <Chips ops={[1, 2, 3, 4, 5].map((n) => ({ v: n, t: ["Vazia", "Tranquila", "Normal", "Cheia", "Lotada"][n - 1] }))} valor={lotacao} set={setLotacao} />
         </fieldset>
 
-        <fieldset className="field">
+        <fieldset className={`field ${falta(7) ? s.falta : ""}`} id="q7">
           <span>7. Como estava o tempo e o trânsito?</span>
           {climaAuto && <small style={{ color: "var(--muted)" }}>Marcamos o tempo de agora no terminal. Corrija se na sua viagem estava diferente.</small>}
           <Chips ops={[{ v: "sol" as const, t: "Sol" }, { v: "nublado" as const, t: "Nublado" }, { v: "chuva" as const, t: "Chuva" }]} valor={clima} set={setClima} />
           <Chips ops={[{ v: "livre" as const, t: "Livre" }, { v: "moderado" as const, t: "Lento" }, { v: "congestionado" as const, t: "Engarrafado" }]} valor={transito} set={setTransito} />
         </fieldset>
 
-        <fieldset className="field">
+        <fieldset className={`field ${falta(8) ? s.falta : ""}`} id="q8">
           <span>8. Nota geral para a viagem</span>
           <div className={s.likert}>
             {[1, 2, 3, 4, 5].map((n) => (
@@ -164,10 +175,16 @@ export function Pesquisa({ linhas, plataforma }: { linhas: Linha[]; plataforma: 
           </div>
         </details>
 
-        <button className="btn signal" style={{ justifyContent: "center", height: 52 }} disabled={!completo || estado === "enviando"}>
+        <button className="btn signal" style={{ justifyContent: "center", height: 52 }} disabled={estado === "enviando"}>
           {estado === "enviando" ? "Enviando…" : "Enviar resposta"}
         </button>
-        {estado === "erro" && <p role="alert" style={{ color: "var(--stop)" }}>Não foi possível enviar. Tente de novo.</p>}
+        {mostrarFaltas && !completo && (
+          <p role="alert" style={{ color: "var(--stop)" }}>
+            Falta responder {faltam.length === 1 ? "a pergunta" : "as perguntas"} {faltam.join(", ")}.
+            {faltam.includes(7) && clima && !transito ? " Na 7, marque também como estava o trânsito." : ""}
+          </p>
+        )}
+        {estado === "erro" && <p role="alert" style={{ color: "var(--stop)" }}>Não foi possível enviar. Verifique a internet e tente de novo.</p>}
         <p className={s.lgpd}>Não coletamos dados pessoais. As respostas são usadas de forma agregada para a gestão do terminal (LGPD, Lei 13.709/2018).</p>
       </form>
     </main>

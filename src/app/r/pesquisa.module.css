@@ -16,3 +16,5 @@
 .done h1 { font-size: 40px; }
 .done p { color: var(--ink-2); }
 .check { width: 48px; height: 48px; border-radius: 50%; background: var(--go); color: #fff; display: grid; place-items: center; font-size: 24px; }
+.falta > span:first-child { color: var(--stop); }
+.falta > span:first-child::after { content: " · responda esta"; font-weight: 400; font-size: 13px; }
