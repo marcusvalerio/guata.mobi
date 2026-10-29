@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Detalhe, Secao } from "@/components/Detalhe";
 import { Mapa } from "@/components/Mapa";
 import { NOTA_CONFIABILIDADE, NOTAS } from "@/lib/metodologia";
+import { BlocoWaze } from "@/waze/Bloco"; // MÓDULO WAZE
 import { Sparkline } from "@/components/Sparkline";
 import { NOME_PERIODO } from "@/lib/tempo";
 import { usePainel } from "@/lib/usePainel";
@@ -196,6 +197,8 @@ export function Painel() {
         </div>
         )}
       </section>
+
+      <BlocoWaze /> {/* MÓDULO WAZE */}
 
       <section className={`card ${s.block} ${s.wide}`}>
         <div className={s.blockH}>

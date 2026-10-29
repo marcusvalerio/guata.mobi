@@ -5,6 +5,8 @@ import "leaflet/dist/leaflet.css";
 import type { Map as LMap, LayerGroup } from "leaflet";
 import { PLATAFORMAS_GEO, PONTOS, TERMINAL } from "@/lib/geo";
 import { CAMADAS, FONTE_SIGEO, geojson } from "@/lib/sigeo";
+import { camadaWaze } from "@/waze/camada"; // MÓDULO WAZE
+import { useWaze } from "@/waze/useWaze"; // MÓDULO WAZE
 import type { DadosPainel } from "@/lib/usePainel";
 import s from "./mapa.module.css";
 
@@ -26,6 +28,16 @@ export function Mapa({ dados }: { dados: DadosPainel }) {
   const oficiais = useRef<{ terminal: LayerGroup; rede: LayerGroup } | null>(null);
   const [sigeo, setSigeo] = useState<"carregando" | "ok" | "falha">("carregando");
   const [nLinhas, setNLinhas] = useState(0);
+  // MÓDULO WAZE: camada opcional de trânsito, desligada por padrão.
+  const [verWaze, setVerWaze] = useState(false);
+  const { dados: waze } = useWaze(verWaze);
+  const camadaWazeRef = useRef<LayerGroup | null>(null);
+  useEffect(() => {
+    camadaWazeRef.current?.remove();
+    camadaWazeRef.current = null;
+    if (!verWaze || !waze || !mapa.current) return;
+    import("leaflet").then((L) => { if (mapa.current) camadaWazeRef.current = camadaWaze(L, waze).addTo(mapa.current); });
+  }, [verWaze, waze]);
 
   useEffect(() => {
     let vivo = true;
@@ -110,7 +122,7 @@ export function Mapa({ dados }: { dados: DadosPainel }) {
         if (!pos) return;
         const icone = L.divIcon({
           className: "",
-          html: `<div class="${s.plat}" style="--c:${COR[p.status]}"><b>${p.plataforma}</b>${p.ocupacao !== null ? `<span>${p.ocupacao}%</span>` : ""}</div>`,
+          html: `<div class="${s.plat}" style="--c:${p.relatos ? COR[p.status] : "#a19c97"}"><b>${p.plataforma}</b>${p.ocupacao !== null ? `<span>${p.ocupacao}%</span>` : ""}</div>`,
           iconSize: [44, 44], iconAnchor: [22, 22],
         });
         L.marker(pos, { icon: icone })
@@ -133,6 +145,7 @@ export function Mapa({ dados }: { dados: DadosPainel }) {
       <div className={s.barra}>
         <div className="chips">
           <button type="button" className="chip" aria-pressed={modo === "terminal"} onClick={() => setModo("terminal")}>Terminal</button>
+          <button type="button" className="chip" aria-pressed={verWaze} onClick={() => setVerWaze((v) => !v)}>Trânsito (Waze)</button>
           <button type="button" className="chip" aria-pressed={modo === "rede"} onClick={() => setModo("rede")}>Linhas que passam aqui{nLinhas ? ` (${nLinhas})` : ""}</button>
         </div>
         <span className={s.legenda}>
