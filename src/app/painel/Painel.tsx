@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Detalhe, Secao } from "@/components/Detalhe";
 import { Mapa } from "@/components/Mapa";
+import { NOTA_CONFIABILIDADE, NOTAS } from "@/lib/metodologia";
 import { Sparkline } from "@/components/Sparkline";
 import { NOME_PERIODO } from "@/lib/tempo";
 import { usePainel } from "@/lib/usePainel";
@@ -14,6 +16,7 @@ const hora = (iso: string) => new Date(iso).toLocaleTimeString("pt-BR", { hour: 
 export function Painel() {
   const { dados, erro } = usePainel();
   const [linhaSel, setLinhaSel] = useState(0);
+  const [aberto, setAberto] = useState<string | null>(null);
 
   if (!dados) return <p className={s.loading}>{erro ? "Sem conexão com o servidor." : "Carregando indicadores…"}</p>;
   const { kpis, tempoViagem, cenarios, previsao, ultimas, totais, confiabilidade: conf } = dados;
@@ -30,24 +33,10 @@ export function Painel() {
         <div className={s.live}>
           <span className={`${s.pulse} ${erro ? s.off : ""}`} />
           <span>{erro ? "Reconectando" : "Ao vivo"} · atualizado {hora(dados.geradoEm)}</span>
-          <details className={s.conf} data-nivel={conf.nivel}>
-            <summary>
-              <span className={s.confBar}><i style={{ width: `${conf.pct}%` }} /></span>
-              Confiabilidade {conf.pct}%
-            </summary>
-            <div className={s.confPop}>
-              <p className={s.confTit}>Quanto dá para confiar nestes números</p>
-              {conf.fatores.map((f) => (
-                <div key={f.nome} className={s.confRow}>
-                  <span>{f.nome} <small className={s.muted}>peso {Math.round(f.peso * 100)}%</small></span>
-                  <span className="num">{Math.round(f.valor * 100)}%</span>
-                  <span className={s.confBar}><i style={{ width: `${f.valor * 100}%` }} /></span>
-                  <small className={s.muted}>{f.detalhe}</small>
-                </div>
-              ))}
-              {conf.simulados > 0 && <p className={s.confAviso}>{conf.simulados} respostas simuladas nas últimas 24h não contam como evidência.</p>}
-            </div>
-          </details>
+          <button type="button" className={s.confBtn} data-nivel={conf.nivel} onClick={() => setAberto("confiabilidade")}>
+            <span className={s.confBar}><i style={{ width: `${conf.pct}%` }} /></span>
+            Confiabilidade {conf.pct}%
+          </button>
           <span className="tag">{totais.respostas.toLocaleString("pt-BR")} respostas · {totais.reais} reais</span>
         </div>
       </div>
@@ -56,26 +45,28 @@ export function Painel() {
         <div className={s.alert} role="status">
           <strong>Atenção no tempo de viagem</strong>
           {alertas.map((a) => (
-            <span key={a.linha.id}>Linha {a.linha.codigo}: {a.alerta ?? `${a.observado} min observado vs ${a.esperado ?? "–"} min esperado`}</span>
+            <span key={a.linha.id}>Linha {a.linha.codigo}: {a.alerta ?? `${a.observado} min observado vs ${a.esperado ?? "sem histórico de"} min esperado`}</span>
           ))}
         </div>
       )}
 
-      <section className={s.kpis} aria-label="Indicadores-chave">
+      <section className={s.kpis} aria-label="Indicadores chave">
         {kpis.map((k) => (
-          <article key={k.dimensao} className={`card ${s.kpi}`} data-status={k.status}>
+          <article key={k.dimensao} className={`card ${s.kpi} ${s.clicavel}`} data-status={k.n === 0 ? "vazio" : k.status} role="button" tabIndex={0} onClick={() => setAberto(k.dimensao)} onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setAberto(k.dimensao)}>
             <div className={s.kpiTop}>
               <span className="eyebrow">{k.dimensao}</span>
-              <span className={s.status} style={{ color: COR[k.status] }}><span className={`dot ${k.status}`} />{ROTULO[k.status]}</span>
+              {k.n === 0
+                ? <span className={s.status} style={{ color: "var(--muted)" }}><span className="dot pendente" />Sem dado</span>
+                : <span className={s.status} style={{ color: COR[k.status] }}><span className={`dot ${k.status}`} />{ROTULO[k.status]}</span>}
             </div>
             <h2 className={s.kpiI}>{k.indicador}</h2>
             <p className={s.kpiV}>
-              <span className="num">{k.valor ?? "–"}</span>
-              <small>{k.unidade}</small>
+              {k.valor === null ? <span className={s.semDado}>Aguardando registros</span> : (<><span className="num">{k.valor}</span>
+              <small>{k.unidade}</small></>)}
             </p>
             <Sparkline dados={k.serie} cor={COR[k.status]} />
             <p className={s.kpiD}>{k.detalhe}</p>
-            <p className={s.kpiO}>{k.objetivo}</p>
+            <p className={s.kpiO}>{k.objetivo} <span className={s.ver}>Como é medido</span></p>
           </article>
         ))}
       </section>
@@ -108,9 +99,9 @@ export function Painel() {
               {comRelato.map((t) => (
                 <tr key={t.linha.id}>
                   <td><strong className="num">{t.linha.codigo}</strong> <span className={s.muted}>{t.linha.nome}</span></td>
-                  <td className="num">{t.linha.plataforma ?? "–"}</td>
+                  <td className="num">{t.linha.plataforma ?? "·"}</td>
                   <td className="num">{t.esperado ? `${t.esperado} min` : <span className={s.muted}>sem histórico</span>}</td>
-                  <td className="num">{t.observado ? `${t.observado} min` : "–"}</td>
+                  <td className="num">{t.observado ? `${t.observado} min` : "·"}</td>
                   <td>
                     <div className={s.bar}>
                       <span style={{ width: `${Math.min(100, ((t.indice ?? 0) / 2) * 100)}%`, background: COR[t.status] }} />
@@ -141,7 +132,7 @@ export function Painel() {
           {cenarios[linhaSel].cenarios.map((c) => (
             <div key={c.rotulo}>
               <span className="eyebrow">{c.rotulo}</span>
-              <span className={`num ${s.scenN}`}>{c.min ?? "–"}{c.min !== null && <small>min</small>}</span>
+              <span className={`num ${s.scenN}`}>{c.min ?? "·"}{c.min !== null && <small>min</small>}</span>
               <span className={s.muted}>{c.amostras ? `mediana de ${c.amostras} relatos` : "menos de 5 relatos reais"}</span>
             </div>
           ))}
@@ -154,7 +145,7 @@ export function Painel() {
             <p className="eyebrow">Previsão para amanhã</p>
             <h2>Chuva por período</h2>
           </div>
-          <span className="tag">{previsao.fonte === "open-meteo" ? "Open-Meteo" : "Sem previsão · assumindo tempo seco"}</span>
+          <span className="tag">{previsao.fonte === "open-meteo" ? "Open Meteo" : "Sem previsão · assumindo tempo seco"}</span>
         </div>
         <div className={s.rain}>
           {previsao.periodos.map((p) => (
@@ -193,8 +184,8 @@ export function Painel() {
                       {p.tempoMin === null ? <span className={s.muted}>sem histórico</span> : (<>
                       <div>{p.tempoMin} min de viagem</div>
                       <div className={s.muted}>a cada {p.headway} min · {p.frota} ônibus</div>
-                      {p.delta! > 0 && <span className={s.delta}>+{p.delta}</span>}
-                      {p.delta! < 0 && <span className={s.deltaNeg}>{p.delta}</span>}
+                      {p.delta! > 0 && <span className={s.delta}>{p.delta} a mais</span>}
+                      {p.delta! < 0 && <span className={s.deltaNeg}>{Math.abs(p.delta!)} a menos</span>}
                       </>)}
                     </td>
                   ))}
@@ -227,6 +218,41 @@ export function Painel() {
           })}
         </ul>
       </section>
+
+      {kpis.map((k) => {
+        const n = NOTAS[k.dimensao];
+        return (
+          <Detalhe key={k.dimensao} aberto={aberto === k.dimensao} fechar={() => setAberto(null)} titulo={`${k.dimensao}: ${k.indicador}`} sobre="Nota metodológica">
+            <Secao titulo="Agora">
+              <p><strong className="num">{k.valor ?? "sem dado"} {k.valor !== null && k.unidade}</strong> · calculado com {k.n} {k.n === 1 ? "registro" : "registros"} · {k.detalhe}</p>
+            </Secao>
+            <Secao titulo="O que responde"><p>{n.pergunta}</p><small>Objetivo operacional (Tabela 1): {k.objetivo}</small></Secao>
+            <Secao titulo="Como é coletado"><ul>{n.coleta.map((t) => <li key={t}>{t}</li>)}</ul></Secao>
+            <Secao titulo="Como é calculado"><ul>{n.calculo.map((t) => <li key={t}>{t}</li>)}</ul></Secao>
+            <Secao titulo="Leitura do semáforo"><p>{n.semaforo}</p></Secao>
+            <Secao titulo="Lugar na arquitetura"><p>{n.camadas}</p></Secao>
+            <Secao titulo="Limitações"><ul>{n.limitacoes.map((t) => <li key={t}>{t}</li>)}</ul></Secao>
+            <Secao titulo="Referências"><ul>{n.referencias.map((t) => <li key={t}><small>{t}</small></li>)}</ul></Secao>
+          </Detalhe>
+        );
+      })}
+
+      <Detalhe aberto={aberto === "confiabilidade"} fechar={() => setAberto(null)} titulo={`Confiabilidade dos dados: ${conf.pct}%`} sobre="Nota metodológica">
+        <Secao titulo="Agora">
+          {conf.fatores.map((f) => (
+            <div key={f.nome} className={s.confRow}>
+              <span>{f.nome} <small className={s.muted}>peso {Math.round(f.peso * 100)}%</small></span>
+              <span className="num">{Math.round(f.valor * 100)}%</span>
+              <span className={s.confBar}><i style={{ width: `${f.valor * 100}%` }} /></span>
+              <small className={s.muted}>{f.detalhe}</small>
+            </div>
+          ))}
+        </Secao>
+        <Secao titulo="Por que medir a confiabilidade">{NOTA_CONFIABILIDADE.porque.map((t) => <p key={t}>{t}</p>)}</Secao>
+        <Secao titulo="Como é composta"><ul>{NOTA_CONFIABILIDADE.fatores.map((f) => <li key={f.nome}><strong>{f.nome}.</strong> {f.texto}</li>)}</ul></Secao>
+        <Secao titulo="Leitura"><p>{NOTA_CONFIABILIDADE.leitura}</p></Secao>
+        <Secao titulo="Limitações"><ul>{NOTA_CONFIABILIDADE.limitacoes.map((t) => <li key={t}>{t}</li>)}</ul></Secao>
+      </Detalhe>
     </div>
   );
 }

@@ -13,6 +13,7 @@ export interface Kpi {
   status: Status;
   detalhe: string;
   serie: number[]; // últimas 24h, uma posição por hora
+  n: number; // registros usados no valor atual
 }
 
 const H = 3600_000;
@@ -77,37 +78,37 @@ export function calcularKpis(b: Banco, agora = Date.now()): Kpi[] {
 
   return [
     {
-      dimensao: "Demanda", indicador: "Fluxo de embarque e desembarque", objetivo: "Identificar picos de lotação e dimensionar filas.",
+      dimensao: "Demanda", n: c24.length, indicador: "Fluxo de embarque e desembarque", objetivo: "Identificar picos de lotação e dimensionar filas.",
       valor: demandaAgora && Math.round(demandaAgora), unidade: "pass/h",
       status: faixa(demandaAgora, 3200, 4600), detalhe: c24.length ? `Pico nas últimas 24h às ${horaPico}h` : "Sem contagens de fluxo em 24h",
       serie: serieDemanda,
     },
     {
-      dimensao: "Operação", indicador: "Índice de pontualidade e regularidade", objetivo: "Monitorar cumprimento de tabelas horárias.",
+      dimensao: "Operação", n: r24.length, indicador: "Índice de pontualidade e regularidade", objetivo: "Monitorar cumprimento de tabelas horárias.",
       valor: pont && Math.round(pont), unidade: "%",
-      status: faixa(pont, 85, 70), detalhe: `Espera média ${espera?.toFixed(0) ?? "–"} min`,
+      status: faixa(pont, 85, 70), detalhe: espera === null ? "Espera média sem dado" : `Espera média ${espera.toFixed(0)} min`,
       serie: porHora(r24, agora, (g) => (g.length ? (g.filter((r) => r.saiuNoHorario).length / g.length) * 100 : null)),
     },
     {
-      dimensao: "Infraestrutura", indicador: "Taxa de ocupação de plataformas", objetivo: "Otimizar alocação de ônibus e tempos de permanência.",
+      dimensao: "Infraestrutura", n: r3.length, indicador: "Taxa de ocupação de plataformas", objetivo: "Otimizar alocação de ônibus e tempos de permanência.",
       valor: ocupAgora && Math.round(ocupAgora), unidade: "%",
       status: faixa(maisCheia.v, 55, 75), detalhe: `Plataforma ${maisCheia.p} mais cheia (${Math.round(maisCheia.v ?? 0)}%)`,
       serie: porHora(r24, agora, ocup),
     },
     {
-      dimensao: "Acessibilidade", indicador: "Tempo médio de integração intermodal", objetivo: "Avaliar fluidez com barcas e linhas municipais.",
+      dimensao: "Acessibilidade", n: integ.length, indicador: "Tempo médio de integração intermodal", objetivo: "Avaliar fluidez com barcas e linhas municipais.",
       valor: tInteg && Math.round(tInteg), unidade: "min",
-      status: faixa(tInteg, 10, 16), detalhe: `Barcas: ${tBarcas?.toFixed(0) ?? "–"} min`,
+      status: faixa(tInteg, 10, 16), detalhe: tBarcas === null ? "Barcas: sem dado" : `Barcas: ${tBarcas.toFixed(0)} min`,
       serie: porHora(integ, agora, (g) => media(g.map((r) => r.tempoIntegracaoMin!))),
     },
     {
-      dimensao: "Satisfação", indicador: "Volume de reclamações e escore médio", objetivo: "Incorporar a percepção do usuário na gestão.",
+      dimensao: "Satisfação", n: r24.length, indicador: "Volume de reclamações e escore médio", objetivo: "Incorporar a percepção do usuário na gestão.",
       valor: sat && Number(sat.toFixed(1)), unidade: "/ 5",
       status: faixa(sat, 3.8, 3), detalhe: `${recl} reclamações em 24h`,
       serie: porHora(r24, agora, (g) => media(g.map((r) => r.satisfacao))),
     },
     {
-      dimensao: "Segurança", indicador: "Nº de ocorrências registradas", objetivo: "Subsidiar ações de segurança e sinalização.",
+      dimensao: "Segurança", n: o7.length, indicador: "Nº de ocorrências registradas", objetivo: "Subsidiar ações de segurança e sinalização.",
       valor: o7.length, unidade: "em 7 dias",
       status: faixa(o7.length, 6, 14), detalhe: pior ? `${pior[0]} concentra ${pior[1]} · ${relatos} relatos de passageiros` : `${relatos} relatos de passageiros`,
       serie: porHora(desde(b.ocorrencias, 24 * H, agora), agora, (g) => g.length),

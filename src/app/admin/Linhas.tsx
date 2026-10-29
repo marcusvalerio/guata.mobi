@@ -28,11 +28,11 @@ export function Linhas({ linhas, plataformas }: { linhas: Linha[]; plataformas: 
             <tr key={l.id}>
               <td><strong className="num">{l.codigo}</strong> <span className={s.muted}>{l.nome.startsWith("Linha ") ? "" : l.nome}</span></td>
               <td className={s.muted}>{l.consorcio}</td>
-              <td className="num">{l.extensaoKm ? `${l.extensaoKm} km` : "–"}</td>
+              <td className="num">{l.extensaoKm ? `${l.extensaoKm} km` : "·"}</td>
               <td colSpan={4}>
                 <form onSubmit={(e) => { e.preventDefault(); salvar(l.id, e.currentTarget); }} style={{ display: "flex", gap: 8, alignItems: "center" }}>
                   <select name="plataforma" defaultValue={l.plataforma ?? ""} className="input" style={{ width: 90, height: 36 }}>
-                    <option value="">–</option>
+                    <option value="">·</option>
                     {plataformas.map((p) => <option key={p}>{p}</option>)}
                   </select>
                   <input name="headwayMin" defaultValue={l.headwayMin ?? ""} inputMode="numeric" placeholder="não inf." className="input" style={{ width: 90, height: 36 }} />

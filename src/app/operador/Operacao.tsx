@@ -63,7 +63,7 @@ export function Operacao({ plataformas }: { plataformas: string[] }) {
           {alertas.map((t) => (
             <li key={t.linha.id} style={{ gridTemplateColumns: "auto 1fr" }}>
               <span className={`dot ${t.status}`} />
-              <span><strong className="num">Linha {t.linha.codigo}</strong> (plat. {t.linha.plataforma ?? "–"}): {t.alerta ?? `${t.observado} min observado, ${t.esperado ?? "sem histórico de"} min esperado`}</span>
+              <span><strong className="num">Linha {t.linha.codigo}</strong> (plat. {t.linha.plataforma ?? "·"}): {t.alerta ?? `${t.observado} min observado, ${t.esperado ?? "sem histórico de"} min esperado`}</span>
             </li>
           ))}
         </ul>

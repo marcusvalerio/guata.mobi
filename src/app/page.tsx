@@ -21,7 +21,7 @@ const CAMADAS = [
 ];
 
 const PROXIMOS = [
-  ["Login por cargo", "Cada pessoa entra com o próprio e-mail; o cargo define o que vê. Base para auditoria das decisões."],
+  ["Login por cargo", "Cada pessoa entra com o próprio email; o cargo define o que vê. Base para auditoria das decisões."],
   ["GTFS do MOBNIT", "Itinerários e quadros horários oficiais: pontualidade passa a comparar o programado com o realizado."],
   ["Bilhetagem e sensores", "Validações por linha e contagem automática nas entradas alimentam a dimensão Demanda sem digitação."],
   ["Gêmeo Digital e NitTrans", "Camadas territoriais e contagens volumétricas para ler o terminal dentro da malha viária da cidade."],
@@ -113,7 +113,7 @@ export default function Home() {
 
       <section id="dimensoes" className="wrap">
         <div className={s.secHead}>
-          <p className="eyebrow">Tabela 1 · Indicadores-chave de desempenho</p>
+          <p className="eyebrow">Tabela 1 · Indicadores chave de desempenho</p>
           <h2 className={s.h2}>Seis dimensões, um painel.</h2>
         </div>
         <ol className={s.dims}>
@@ -227,12 +227,12 @@ export default function Home() {
               <thead><tr><th>Etapa</th><th>Período</th><th>Status</th></tr></thead>
               <tbody>
                 {[
-                  ["Revisão bibliográfica e referencial teórico", "fev.–abr. 2026", "Concluída"],
+                  ["Revisão bibliográfica e referencial teórico", "fev. a abr. 2026", "Concluída"],
                   ["Problema de pesquisa e objetivos", "mai. 2026", "Concluída"],
-                  ["Arquitetura técnica e KPIs; submissão ao 23º RDT", "jun.–set. 2026", "Concluída"],
-                  ["Dados institucionais e entrevistas com gestores", "out. 2026–fev. 2027", "Em curso"],
-                  ["Protótipo do painel e testes de usabilidade", "mar.–jul. 2027", "Antecipado"],
-                  ["Análise dos resultados e redação final", "ago.–out. 2027", "Planejada"],
+                  ["Arquitetura técnica e KPIs; submissão ao 23º RDT", "jun. a set. 2026", "Concluída"],
+                  ["Dados institucionais e entrevistas com gestores", "out. 2026 a fev. 2027", "Em curso"],
+                  ["Protótipo do painel e testes de usabilidade", "mar. a jul. 2027", "Antecipado"],
+                  ["Análise dos resultados e redação final", "ago. a out. 2027", "Planejada"],
                 ].map(([e, p, st]) => (
                   <tr key={e}><td>{e}</td><td className="num">{p}</td><td><span className="tag">{st}</span></td></tr>
                 ))}

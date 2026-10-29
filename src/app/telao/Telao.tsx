@@ -34,8 +34,8 @@ export function Telao() {
           <div key={t.linha.id} className={s.row}>
             <span className={s.code}>{t.linha.codigo}</span>
             <span className={s.dest}>{t.linha.nome}</span>
-            <span className={s.plat}>{t.linha.plataforma ?? "–"}</span>
-            <span className={s.min}>{t.observado ?? t.esperado ?? "–"}{(t.observado ?? t.esperado) !== null && <small>min</small>}</span>
+            <span className={s.plat}>{t.linha.plataforma ?? "·"}</span>
+            <span className={s.min}>{t.observado ?? t.esperado ?? "·"}{(t.observado ?? t.esperado) !== null && <small>min</small>}</span>
             <span className={s.st} data-s={t.amostras ? t.status : "atencao"}><i />{t.amostras ? ESTADO[t.status] : "Sem relatos"}</span>
           </div>
         ))}

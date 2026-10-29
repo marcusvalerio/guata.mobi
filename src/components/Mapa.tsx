@@ -8,6 +8,9 @@ import { CAMADAS, FONTE_SIGEO, geojson } from "@/lib/sigeo";
 import type { DadosPainel } from "@/lib/usePainel";
 import s from "./mapa.module.css";
 
+/** Textos vindos do SIGeo trazem " - " como separador; a regra editorial do Guatá não usa hífen. */
+const semHifen = (t: string) => t.replace(/\s*[-–—]\s*/g, " / ");
+
 const COR = { ok: "#100c08", atencao: "#ca3f16", critico: "#95122c" } as const;
 
 /**
@@ -59,17 +62,17 @@ export function Mapa({ dados }: { dados: DadosPainel }) {
           .bindTooltip("Barcas Praça Araribóia × Praça XV", { sticky: true }),
         L.geoJSON(abrigos, {
           pointToLayer: (f, ll) => L.circleMarker(ll, { radius: 4, color: "#100c08", weight: 1.5, fillColor: "#ff9408", fillOpacity: 1 })
-            .bindTooltip(`Abrigo ${f.properties?.tx_COD ?? ""} · ${f.properties?.tx_endereco ?? ""}`),
+            .bindTooltip(semHifen(`Abrigo ${f.properties?.tx_COD ?? ""} · ${f.properties?.tx_endereco ?? ""}`)),
         }),
         L.geoJSON(cameras, {
           pointToLayer: (f, ll) => L.circleMarker(ll, { radius: 6, color: "#100c08", weight: 2, fillColor: "#95122c", fillOpacity: 1 })
-            .bindTooltip(`Câmera NitTrans · ${f.properties?.camera_name ?? ""}`),
+            .bindTooltip(semHifen(`Câmera NitTrans · ${f.properties?.camera_name ?? ""}`)),
         }),
       ]);
       const linha = (consorcio: string) => ({
         style: { color: "#100c08", weight: 1.6, opacity: .45 },
         onEachFeature: (f: GeoJSON.Feature, l: import("leaflet").Layer) => {
-          l.bindTooltip(`<b>${f.properties?.tx_nome ?? ""}</b><br>${consorcio}`, { sticky: true });
+          l.bindTooltip(`<b>${semHifen(String(f.properties?.tx_nome ?? "").replace(/_/g, " "))}</b><br>${consorcio}`, { sticky: true });
           l.on("mouseover", (e) => (e.target as import("leaflet").Path).setStyle({ color: "#ff9408", weight: 4, opacity: 1 }));
           l.on("mouseout", (e) => (e.target as import("leaflet").Path).setStyle({ color: "#100c08", weight: 1.6, opacity: .45 }));
         },
@@ -111,7 +114,7 @@ export function Mapa({ dados }: { dados: DadosPainel }) {
           iconSize: [44, 44], iconAnchor: [22, 22],
         });
         L.marker(pos, { icon: icone })
-          .bindTooltip(`<b>Plataforma ${p.plataforma}</b><br>Lotação percebida: ${p.ocupacao ?? "–"}%<br>Ocorrências (7 dias): ${p.ocorrencias}<br>Linhas: ${p.linhas.join(", ")}<br><small>${p.relatos} relatos nas últimas 3h</small>`, { direction: "top", offset: [0, -18] })
+          .bindTooltip(`<b>Plataforma ${p.plataforma}</b><br>Lotação percebida: ${p.ocupacao === null ? "sem dado" : p.ocupacao + "%"}<br>Ocorrências (7 dias): ${p.ocorrencias}<br>Linhas: ${p.linhas.join(", ")}<br><small>${p.relatos} relatos nas últimas 3h</small>`, { direction: "top", offset: [0, -18] })
           .addTo(g);
       });
     });
@@ -139,7 +142,7 @@ export function Mapa({ dados }: { dados: DadosPainel }) {
       </div>
       <div ref={el} className={s.mapa} />
       <p className={s.nota}>
-        Abrigos, câmera, barcas e traçado das linhas municipais: {FONTE_SIGEO} (dados abertos{sigeo === "falha" ? " — indisponível agora" : sigeo === "carregando" ? " — carregando" : ""}).
+        Abrigos, câmera, barcas e traçado das linhas municipais: {FONTE_SIGEO} (dados abertos{sigeo === "falha" ? ", indisponível agora" : sigeo === "carregando" ? ", carregando" : ""}).
         Posição das plataformas aproximada; linhas intermunicipais (estaduais) não estão nessa base.
       </p>
     </div>

@@ -17,12 +17,12 @@ export async function GET() {
     banco: { modo: MODO_BANCO, respostas: b.respostas.length, ocorrencias: b.ocorrencias.length, contagens: b.contagens.length },
     coleta: { ultimaHora, ultimaReal },
     integracoes: [
-      { nome: "Previsão do tempo (Open-Meteo)", estado: clima.fonte === "open-meteo" ? "ok" : "falha", detalhe: clima.erro ?? `${latClima} ms` },
+      { nome: "Previsão do tempo (Open Meteo)", estado: clima.fonte === "open-meteo" ? "ok" : "falha", detalhe: clima.erro ?? `${latClima} ms` },
       { nome: "MOBNIT · GTFS de itinerários", estado: "pendente", detalhe: "Aguardando liberação do arquivo GTFS" },
       { nome: "NitTrans · contagens volumétricas", estado: "pendente", detalhe: "Aguardando convênio" },
       { nome: "SIGeo · linhas, abrigos, câmeras e barcas", estado: "ok", detalhe: "Camadas abertas carregadas no mapa pelo navegador" },
       { nome: "Bilhetagem (validadores dos ônibus)", estado: "pendente", detalhe: "Depende de acordo com consórcios" },
-      { nome: "Sensores de contagem do terminal", estado: process.env.GUATA_CHAVE_INTEGRACAO ? "ok" : "pendente", detalhe: "POST /api/contagens com x-guata-chave" },
+      { nome: "Sensores de contagem do terminal", estado: process.env.GUATA_CHAVE_INTEGRACAO ? "ok" : "pendente", detalhe: "Entrada pronta: envio para /api/contagens com chave de integração" },
     ],
     erros: b.erros.slice(-20).reverse(),
   });

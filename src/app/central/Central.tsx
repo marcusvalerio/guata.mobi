@@ -49,15 +49,15 @@ export function Central() {
       <section className={s.kpis}>
         {[
           ["Banco", d?.banco.modo === "memoria" ? "Memória" : "Neon (Postgres)", d?.banco.modo === "memoria" ? "Local: reinicia com o servidor" : "Persistente · só dados reais"],
-          ["Respostas", d?.banco.respostas.toLocaleString("pt-BR"), `${d?.coleta.ultimaHora ?? "–"} na última hora`],
-          ["Última resposta real", d ? quando(d.coleta.ultimaReal) : "–", "Vinda de QR Code"],
+          ["Respostas", d?.banco.respostas.toLocaleString("pt-BR"), `${d?.coleta.ultimaHora ?? "·"} na última hora`],
+          ["Última resposta real", d ? quando(d.coleta.ultimaReal) : "·", "Vinda de QR Code"],
           ["Ocorrências", d?.banco.ocorrencias, "Total registrado"],
           ["Contagens de fluxo", d?.banco.contagens, "Manual, sensor ou bilhetagem"],
-          ["No ar desde", d ? quando(d.iniciadoEm) : "–", "Instância atual"],
+          ["No ar desde", d ? quando(d.iniciadoEm) : "·", "Instância atual"],
         ].map(([t, v, sub]) => (
           <article key={String(t)} className={`card ${s.kpi}`}>
             <span className="eyebrow">{t}</span>
-            <p className={s.kpiV}><span className="num" style={{ fontSize: 26 }}>{v ?? "–"}</span></p>
+            <p className={s.kpiV}><span className="num" style={{ fontSize: 26 }}>{v ?? "·"}</span></p>
             <p className={s.muted}>{sub}</p>
           </article>
         ))}

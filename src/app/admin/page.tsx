@@ -59,14 +59,14 @@ export default function Page() {
         <section className={`card ${s.block}`}>
           <div className={s.blockH}><div><p className="eyebrow">Equipe</p><h2>Usuários e cargos</h2></div></div>
           <table>
-            <thead><tr><th>Nome</th><th>E-mail</th><th>Cargo</th></tr></thead>
+            <thead><tr><th>Nome</th><th>Email</th><th>Cargo</th></tr></thead>
             <tbody>
               {USUARIOS_DEMO.map((u) => (
                 <tr key={u.id}><td>{u.nome}</td><td className="num" style={{ fontSize: 13 }}>{u.email}</td><td><span className="tag">{NOME_PAPEL[u.papel]}</span></td></tr>
               ))}
             </tbody>
           </table>
-          <p className={s.muted}>Convites por e-mail entram junto com o banco de dados (Supabase Auth).</p>
+          <p className={s.muted}>Convites por email entram junto com o banco de dados (Supabase Auth).</p>
         </section>
 
         <section className={`card ${s.block}`}>
@@ -76,7 +76,7 @@ export default function Page() {
               <thead><tr><th>Permissão</th><th>Central</th><th>Admin</th><th>Gestor</th><th>Operador</th></tr></thead>
               <tbody>
                 {PERMISSOES.map(([p, ...v]) => (
-                  <tr key={p}><td>{p}</td>{v.map((x, i) => <td key={i} className="num">{x ? "●" : <span className={s.muted}>–</span>}</td>)}</tr>
+                  <tr key={p}><td>{p}</td>{v.map((x, i) => <td key={i} className="num">{x ? "●" : <span className={s.muted}>·</span>}</td>)}</tr>
                 ))}
               </tbody>
             </table>
@@ -86,7 +86,7 @@ export default function Page() {
         <section className={`card ${s.block} ${s.wide}`}>
           <div className={s.blockH}>
             <div><p className="eyebrow">Rede</p><h2>Linhas que passam pelo terminal</h2></div>
-            <span className={s.muted}>Fonte: {FONTE_LINHAS.fonte} · coletado em {FONTE_LINHAS.coletadoEm}</span>
+            <span className={s.muted}>Fonte: {FONTE_LINHAS.fonte} · coletado em {FONTE_LINHAS.coletadoEm.split("-").reverse().join("/")}</span>
           </div>
           <p className={s.muted}>Plataforma, intervalo e frota não são públicos: cadastre o que a operação confirmar. Sem cadastro, o painel mostra “não informado” e não calcula recomendação para a linha.</p>
           <Suspense fallback={<p className={s.muted}>Carregando linhas…</p>}>
@@ -101,7 +101,7 @@ export default function Page() {
           </div>
           <div className="scroll-x">
             <table>
-              <thead><tr><th>Consórcio</th><th>Empresa</th><th>Veículos</th><th>Ar-condicionado</th><th>Acessibilidade</th><th>GPS</th><th>Câmera</th><th>Lugares sentados</th></tr></thead>
+              <thead><tr><th>Consórcio</th><th>Empresa</th><th>Veículos</th><th>Ar condicionado</th><th>Acessibilidade</th><th>GPS</th><th>Câmera</th><th>Lugares sentados</th></tr></thead>
               <tbody>
                 {FROTA.empresas.map((e) => (
                   <tr key={e.empresa}>
