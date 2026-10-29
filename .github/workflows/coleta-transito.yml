@@ -1,0 +1,12 @@
+# MÓDULO WAZE (complementar): grava o histórico de trânsito a cada 10 minutos.
+name: Coleta de trânsito
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+jobs:
+  coletar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - run: curl -fsS --max-time 60 https://guata-mobi.vercel.app/api/coleta

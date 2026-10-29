@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Detalhe, Secao } from "@/components/Detalhe";
 import s from "@/app/painel/painel.module.css";
+import { NOME_PERIODO } from "@/lib/tempo";
 import { NOTAS_WAZE } from "./notas";
 import { useWaze } from "./useWaze";
 
@@ -53,6 +54,38 @@ export function BlocoWaze() {
                   ))}
                 </tbody>
               </table>
+            </div>
+          )}
+          {dados.previsao && (
+            <div style={{ display: "grid", gap: 10 }}>
+              <div className={s.blockH}>
+                <div>
+                  <p className="eyebrow">Previsão de trânsito para amanhã · histórico próprio</p>
+                  <h2 style={{ fontSize: 16 }}>Atraso típico por período, com a chuva prevista</h2>
+                </div>
+                <button type="button" className={s.confBtn} data-nivel="alta" onClick={() => setAberto("previsao")}>Como é estimado</button>
+              </div>
+              <div className="scroll-x">
+                <table>
+                  <thead><tr><th>Período</th><th>Chuva prevista</th><th>Entorno do terminal</th><th>Linhas com mais atraso</th><th>Coletas usadas</th></tr></thead>
+                  <tbody>
+                    {dados.previsao.periodos.map((p) => (
+                      <tr key={p.periodo}>
+                        <td>{NOME_PERIODO[p.periodo]}</td>
+                        <td>{p.chuva ? "Sim" : "Não"}</td>
+                        <td className="num">{p.suficiente && p.entornoMin !== null ? `${p.entornoMin} min` : <span className={s.muted}>coletando</span>}</td>
+                        <td>{p.suficiente ? (p.linhas.map((l) => `${l.codigo} (${l.atrasoMin} min)`).join(" · ") || "sem atraso relevante") : <span className={s.muted}>mínimo de 6 coletas no período</span>}</td>
+                        <td className="num">{p.coletas}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className={s.muted}>
+                {dados.previsao.coletas
+                  ? `Histórico desde ${new Date(dados.previsao.desde!).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })}, ${dados.previsao.coletas} coletas a cada 10 minutos.`
+                  : "Histórico começando agora: a primeira coleta entra em até 10 minutos."}
+              </p>
             </div>
           )}
           <p className={s.muted}>Fonte: {dados.fonte}. Atualizado às {hora(dados.atualizadoEm)}.</p>

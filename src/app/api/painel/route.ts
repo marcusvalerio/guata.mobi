@@ -1,4 +1,5 @@
-import { connection } from "next/server";
+import { after, connection } from "next/server";
+import { coletar } from "@/waze/historico"; // MÓDULO WAZE
 import { previsaoAmanha } from "@/lib/clima";
 import { calcularKpis, cenarios, indiceTempoViagem, porPlataforma, recomendacoes } from "@/lib/kpis";
 import { confiabilidade } from "@/lib/confiabilidade";
@@ -6,6 +7,8 @@ import { banco, FONTE_LINHAS } from "@/lib/store";
 
 export async function GET() {
   await connection();
+  // MÓDULO WAZE: painel ou telão abertos também alimentam o histórico de trânsito.
+  after(() => coletar().catch(() => {}));
   const agora = Date.now();
   const amanha = new Date(agora + 24 * 3600_000);
   const [prev, b] = await Promise.all([previsaoAmanha(), banco()]);

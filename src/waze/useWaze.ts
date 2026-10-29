@@ -2,8 +2,9 @@
 // MÓDULO WAZE (complementar).
 import { useEffect, useState } from "react";
 import type { trafegoWaze } from "./dados";
+import type { previsaoTransito } from "./historico";
 
-export type DadosWaze = Awaited<ReturnType<typeof trafegoWaze>>;
+export type DadosWaze = Awaited<ReturnType<typeof trafegoWaze>> & { previsao: Awaited<ReturnType<typeof previsaoTransito>> };
 
 export function useWaze(ativo = true) {
   const [dados, setDados] = useState<DadosWaze | null>(null);
