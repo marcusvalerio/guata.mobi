@@ -66,7 +66,7 @@ export default function Page() {
               ))}
             </tbody>
           </table>
-          <p className={s.muted}>Convites por e-mail entram junto com o banco de dados (Supabase Auth).</p>
+          <p className={s.muted}>Convites por e-mail entram com o login real por cargo.</p>
         </section>
 
         <section className={`card ${s.block}`}>

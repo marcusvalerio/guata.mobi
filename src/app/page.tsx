@@ -21,7 +21,7 @@ const CAMADAS = [
 ];
 
 const PROXIMOS = [
-  ["Login por cargo", "Cada pessoa entra com o próprio email; o cargo define o que vê. Base para auditoria das decisões."],
+  ["Login por cargo", "Cada pessoa entra com o próprio e-mail; o cargo define o que vê. Base para auditoria das decisões."],
   ["GTFS do MOBNIT", "Itinerários e quadros horários oficiais: pontualidade passa a comparar o programado com o realizado."],
   ["Bilhetagem e sensores", "Validações por linha e contagem automática nas entradas alimentam a dimensão Demanda sem digitação."],
   ["Gêmeo Digital e NitTrans", "Camadas territoriais e contagens volumétricas para ler o terminal dentro da malha viária da cidade."],
