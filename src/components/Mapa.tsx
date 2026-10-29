@@ -65,9 +65,8 @@ export function Mapa({ dados }: { dados: DadosPainel }) {
       geojson(CAMADAS.abrigos, perto(700)),
       geojson(CAMADAS.cameras, perto(700)),
       geojson(CAMADAS.barcas),
-      geojson(CAMADAS.linhasTransnit, perto(250)),
-      geojson(CAMADAS.linhasTransoceanica, perto(250)),
-    ]).then(([L, abrigos, cameras, barcas, transnit, transoceanica]) => {
+      geojson(CAMADAS.rotasMobnit, { lat: -22.89177, lng: -43.12378, raio: 250 }),
+    ]).then(([L, abrigos, cameras, barcas, rotas]) => {
       if (!vivo || !mapa.current) return;
       const terminal = L.layerGroup([
         L.geoJSON(barcas, { style: { color: "#100c08", weight: 2, dashArray: "2 6", opacity: .7 } })
@@ -81,17 +80,18 @@ export function Mapa({ dados }: { dados: DadosPainel }) {
             .bindTooltip(semHifen(`Câmera NitTrans · ${f.properties?.camera_name ?? ""}`)),
         }),
       ]);
-      const linha = (consorcio: string) => ({
+      const linha = {
         style: { color: "#100c08", weight: 1.6, opacity: .45 },
         onEachFeature: (f: GeoJSON.Feature, l: import("leaflet").Layer) => {
-          l.bindTooltip(`<b>${semHifen(String(f.properties?.tx_nome ?? "").replace(/_/g, " "))}</b><br>${consorcio}`, { sticky: true });
+          const p = f.properties ?? {};
+          l.bindTooltip(`<b>${p.tx_numerolinha}</b> ${semHifen(String(p.tx_nomelinha ?? ""))}<br>${p.tx_sentido ?? ""} · MOBNIT`, { sticky: true });
           l.on("mouseover", (e) => (e.target as import("leaflet").Path).setStyle({ color: "#ff9408", weight: 4, opacity: 1 }));
           l.on("mouseout", (e) => (e.target as import("leaflet").Path).setStyle({ color: "#100c08", weight: 1.6, opacity: .45 }));
         },
-      });
-      const rede = L.layerGroup([L.geoJSON(transnit, linha("TransNit")), L.geoJSON(transoceanica, linha("Transoceânico"))]);
+      };
+      const rede = L.layerGroup([L.geoJSON(rotas, linha)]);
       oficiais.current = { terminal, rede };
-      setNLinhas(new Set([...transnit.features, ...transoceanica.features].map((f) => String(f.properties?.tx_nome ?? "").split(/[_ ]/)[0])).size);
+      setNLinhas(new Set(rotas.features.map((f) => String(f.properties?.tx_numerolinha ?? ""))).size);
       setSigeo("ok");
     }).catch(() => vivo && setSigeo("falha"));
     return () => { vivo = false; };
@@ -155,7 +155,7 @@ export function Mapa({ dados }: { dados: DadosPainel }) {
       </div>
       <div ref={el} className={s.mapa} />
       <p className={s.nota}>
-        Abrigos, câmera, barcas e traçado das linhas municipais: {FONTE_SIGEO} (dados abertos{sigeo === "falha" ? ", indisponível agora" : sigeo === "carregando" ? ", carregando" : ""}).
+        Abrigos, câmera e barcas: {FONTE_SIGEO}. Traçado das linhas: MOBNIT (camada RotasMobNit) (dados abertos{sigeo === "falha" ? ", indisponível agora" : sigeo === "carregando" ? ", carregando" : ""}).
         Posição das plataformas aproximada; linhas intermunicipais (estaduais) não estão nessa base.
       </p>
     </div>

@@ -43,8 +43,7 @@ function linhasAfetadas(rotas: GeoJSON.FeatureCollection, lentos: GeoJSON.Featur
   });
   const porLinha = new Map<string, Set<number>>();
   for (const f of rotas.features) {
-    const nome = String(f.properties?.tx_nome ?? "");
-    const codigo = nome.includes(" - ") ? nome.split(" - ")[0].trim() : (nome.match(/^L(\w+?)(?:_\d)?_/)?.[1] ?? nome);
+    const codigo = String(f.properties?.tx_numerolinha ?? "");
     const g = f.geometry;
     const linhas = g?.type === "LineString" ? [g.coordinates] : g?.type === "MultiLineString" ? g.coordinates : [];
     const acc = porLinha.get(codigo) ?? new Set<number>();
@@ -64,11 +63,10 @@ function linhasAfetadas(rotas: GeoJSON.FeatureCollection, lentos: GeoJSON.Featur
 let cache: { em: number; dados: Awaited<ReturnType<typeof montar>> } | null = null;
 
 async function montar() {
-  const [lentos, alertas, transnit, transoceanica] = await Promise.all([
+  const [lentos, alertas, rotas] = await Promise.all([
     consultar(TRAFEGO, "tx_rua,li_nivel,li_atraso,db_velocidade_kmh,li_comprimento,dt_data_hora", RAIO_M, true),
     consultar(ALERTAS, "tx_rua,tx_tipo_alerta,tx_subtipo_alerta,li_confiabilidade,dt_data_hora", RAIO_M, true),
-    geojson(CAMADAS.linhasTransnit, { lat: TERMINAL.lat, lng: TERMINAL.lng, raio: 250 }),
-    geojson(CAMADAS.linhasTransoceanica, { lat: TERMINAL.lat, lng: TERMINAL.lng, raio: 250 }),
+    geojson(CAMADAS.rotasMobnit, { lat: -22.89177, lng: -43.12378, raio: 250 }),
   ]);
   const props = lentos.features.map((f) => f.properties ?? {});
   const comp = props.reduce((a, p) => a + Number(p.li_comprimento ?? 0), 0);
@@ -81,7 +79,6 @@ async function montar() {
     const t = String(f.properties?.tx_subtipo_alerta || f.properties?.tx_tipo_alerta || "Outro");
     tipos.set(t, (tipos.get(t) ?? 0) + 1);
   });
-  const rotas = { type: "FeatureCollection", features: [...transnit.features, ...transoceanica.features] } as GeoJSON.FeatureCollection;
   const atualizadoEm = Math.max(0, ...props.map((p) => Number(p.dt_data_hora ?? 0)));
   return {
     fonte: FONTE_WAZE,
@@ -97,7 +94,7 @@ async function montar() {
     },
     tiposAlerta: [...tipos.entries()].sort((a, b) => b[1] - a[1]).map(([tipo, n]) => ({ tipo, n })),
     linhasAfetadas: linhasAfetadas(rotas, lentos),
-    totalLinhas: new Set(rotas.features.map((f) => String(f.properties?.tx_nome ?? "").split(/ - |_/)[0].replace(/^L/, ""))).size,
+    totalLinhas: new Set(rotas.features.map((f) => String(f.properties?.tx_numerolinha ?? ""))).size,
     lentos,
     alertasGeo: alertas,
   };

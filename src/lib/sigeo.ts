@@ -5,6 +5,8 @@
 const BASE = "https://services8.arcgis.com/TpaOLI1HCh5AcRQB/arcgis/rest/services";
 
 export const CAMADAS = {
+  /** Traçados oficiais do MOBNIT, com número, nome e sentido de cada linha. */
+  rotasMobnit: "https://sig.niteroi.rj.gov.br/server/rest/services/Hosted/RotasMobNit/FeatureServer/0",
   linhasTransnit: `${BASE}/Grouplayer_SMU_UDU_AGOL/FeatureServer/70`,
   linhasTransoceanica: `${BASE}/Grouplayer_SMU_UDU_AGOL/FeatureServer/80`,
   abrigos: `${BASE}/Grouplayer_SMU_UDU_AGOL/FeatureServer/60`,

@@ -18,7 +18,8 @@ export async function GET() {
     coleta: { ultimaHora, ultimaReal },
     integracoes: [
       { nome: "Previsão do tempo (Open-Meteo)", estado: clima.fonte === "open-meteo" ? "ok" : "falha", detalhe: clima.erro ?? `${latClima} ms` },
-      { nome: "MOBNIT · GTFS de itinerários", estado: "pendente", detalhe: "Aguardando liberação do arquivo GTFS" },
+      { nome: "MOBNIT · traçados das linhas (RotasMobNit)", estado: "ok", detalhe: "41 linhas que passam pelo terminal" },
+      { nome: "MOBNIT · horários, bilhetagem e GPS", estado: "pendente", detalhe: "Não publicados; solicitar à prefeitura" },
       { nome: "NitTrans · contagens volumétricas", estado: "pendente", detalhe: "Aguardando convênio" },
       { nome: "SIGeo · linhas, abrigos, câmeras e barcas", estado: "ok", detalhe: "Camadas abertas carregadas no mapa pelo navegador" },
       { nome: "Waze via NitTrans (módulo complementar)", estado: "ok", detalhe: "Trânsito e alertas ao vivo no entorno; fora dos indicadores da pesquisa" }, // MÓDULO WAZE

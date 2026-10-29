@@ -3,7 +3,8 @@
  * Rio Branco), prédio do terminal e terminal das barcas da Praça Araribóia. As plataformas A–E são
  * APROXIMADAS — ajustar com a planta da concessionária ou levantamento em campo.
  */
-export const TERMINAL = { lat: -22.89123, lng: -43.12529 };
+/** Ponto oficial da camada Terminais_mobilidade (SIGeo). */
+export const TERMINAL = { lat: -22.891228, lng: -43.125424 };
 
 export const PLATAFORMAS_GEO: Record<string, [number, number]> = {
   A: [-22.89039, -43.12636],

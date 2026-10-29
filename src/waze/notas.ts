@@ -18,7 +18,7 @@ export const NOTAS_WAZE: Record<string, { titulo: string; texto: string[] }> = {
   linhas: {
     titulo: "Linhas afetadas",
     texto: [
-      "Cruza o traçado oficial de cada linha municipal (SIGeo) com os trechos lentos: uma linha é afetada quando passa a menos de cerca de 40 m de um trecho congestionado.",
+      "Cruza o traçado oficial de cada linha municipal (MOBNIT) com os trechos lentos: uma linha é afetada quando passa a menos de cerca de 40 m de um trecho congestionado.",
       "O atraso por linha soma o atraso dos trechos que ela atravessa. É uma estimativa do impacto do trânsito, não o atraso medido do ônibus.",
     ],
   },

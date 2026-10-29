@@ -179,9 +179,9 @@ export default function Home() {
             ["Pesquisa por QR Code", "ativo", "Tempo de viagem, espera, lotação, integração, satisfação, ocorrências."],
             ["Registro da operação", "ativo", "Ocorrências e contagem de fluxo feitas pela equipe do terminal."],
             ["Previsão do tempo", "ativo", "Probabilidade de chuva por período, base da previsão do dia seguinte."],
-            ["MOBNIT", "pendente", "Itinerários e quadros horários (GTFS) para comparar programado e realizado."],
+            ["MOBNIT", "ativo", "Linhas e traçados oficiais que passam pelo terminal. Quadros horários e bilhetagem ainda pendentes."],
             ["NitTrans", "pendente", "Contagens volumétricas e estudos de tráfego do entorno."],
-            ["SIGeo · Prefeitura de Niterói", "ativo", "Traçado oficial das linhas municipais, abrigos de ônibus, câmeras da NitTrans e barcas, no mapa."],
+            ["SIGeo · Prefeitura de Niterói", "ativo", "Abrigos de ônibus, câmeras da NitTrans e barcas, no mapa."],
             ["Bilhetagem e sensores", "pendente", "Validações por linha e contagem automática nas entradas."],
           ].map(([n, e, d]) => (
             <div key={n} className={s.source}>
