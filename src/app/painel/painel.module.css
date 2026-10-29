@@ -56,3 +56,18 @@
 .feed li:first-child { animation: in .5s ease; }
 @keyframes in { from { background: color-mix(in srgb, var(--signal) 25%, transparent); } to { background: transparent; } }
 @media (max-width: 620px) { .feed li { grid-template-columns: 48px 1fr; } }
+
+.conf { position: relative; }
+.conf summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; padding: 3px 10px; border-radius: 999px; font-family: var(--font-mono); font-size: 12px; border: 1px solid currentColor; }
+.conf summary::-webkit-details-marker { display: none; }
+.conf[data-nivel="alta"] summary { color: var(--ink); }
+.conf[data-nivel="media"] summary { color: var(--warn); }
+.conf[data-nivel="baixa"] summary { color: var(--stop); }
+.confBar { display: inline-block; width: 36px; height: 4px; border-radius: 2px; background: var(--paper-2); overflow: hidden; }
+.confBar i { display: block; height: 100%; background: currentColor; }
+.confPop { position: absolute; right: 0; top: calc(100% + 8px); z-index: 20; width: min(340px, 86vw); background: var(--card); color: var(--ink); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; display: grid; gap: 12px; box-shadow: 0 10px 30px rgb(16 12 8 / .12); }
+.confTit { font-family: var(--font-ui); font-weight: 600; }
+.confRow { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: center; }
+.confRow .confBar { grid-column: 1 / -1; width: 100%; color: var(--ink); }
+.confRow small { grid-column: 1 / -1; }
+.confAviso { font-size: 12px; color: var(--stop); border-top: 1px solid var(--line); padding-top: 10px; }

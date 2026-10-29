@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Mapa } from "@/components/Mapa";
 import { Sparkline } from "@/components/Sparkline";
 import { NOME_PERIODO } from "@/lib/tempo";
 import { usePainel } from "@/lib/usePainel";
@@ -15,7 +16,7 @@ export function Painel() {
   const [linhaSel, setLinhaSel] = useState(0);
 
   if (!dados) return <p className={s.loading}>{erro ? "Sem conexão com o servidor." : "Carregando indicadores…"}</p>;
-  const { kpis, tempoViagem, cenarios, previsao, ultimas, totais } = dados;
+  const { kpis, tempoViagem, cenarios, previsao, ultimas, totais, confiabilidade: conf } = dados;
   const alertas = tempoViagem.filter((t) => t.status === "critico" || t.alerta);
 
   return (
@@ -28,6 +29,24 @@ export function Painel() {
         <div className={s.live}>
           <span className={`${s.pulse} ${erro ? s.off : ""}`} />
           <span>{erro ? "Reconectando" : "Ao vivo"} · atualizado {hora(dados.geradoEm)}</span>
+          <details className={s.conf} data-nivel={conf.nivel}>
+            <summary>
+              <span className={s.confBar}><i style={{ width: `${conf.pct}%` }} /></span>
+              Confiabilidade {conf.pct}%
+            </summary>
+            <div className={s.confPop}>
+              <p className={s.confTit}>Quanto dá para confiar nestes números</p>
+              {conf.fatores.map((f) => (
+                <div key={f.nome} className={s.confRow}>
+                  <span>{f.nome} <small className={s.muted}>peso {Math.round(f.peso * 100)}%</small></span>
+                  <span className="num">{Math.round(f.valor * 100)}%</span>
+                  <span className={s.confBar}><i style={{ width: `${f.valor * 100}%` }} /></span>
+                  <small className={s.muted}>{f.detalhe}</small>
+                </div>
+              ))}
+              {conf.simulados > 0 && <p className={s.confAviso}>{conf.simulados} respostas simuladas nas últimas 24h não contam como evidência.</p>}
+            </div>
+          </details>
           <span className="tag">{totais.respostas.toLocaleString("pt-BR")} respostas · {totais.reais} reais</span>
         </div>
       </div>
@@ -58,6 +77,16 @@ export function Painel() {
             <p className={s.kpiO}>{k.objetivo}</p>
           </article>
         ))}
+      </section>
+
+      <section className={`card ${s.block} ${s.wide}`}>
+        <div className={s.blockH}>
+          <div>
+            <p className="eyebrow">Mapa · OpenStreetMap</p>
+            <h2>Plataformas por situação e linhas que saem do terminal</h2>
+          </div>
+        </div>
+        <Mapa dados={dados} />
       </section>
 
       <section className={`card ${s.block} ${s.wide}`}>

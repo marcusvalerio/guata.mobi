@@ -14,6 +14,8 @@ export interface DadosPainel {
     periodos: { periodo: Periodo; probChuva: number }[];
     recomendacoes: { linha: Linha; porPeriodo: { periodo: Periodo; clima: string; probChuva: number; tempoMin: number; headway: number; frota: number; delta: number }[] }[];
   };
+  confiabilidade: { pct: number; nivel: "alta" | "media" | "baixa"; simulados: number; fatores: { nome: string; valor: number; peso: number; detalhe: string }[] };
+  plataformas: { plataforma: string; ocupacao: number | null; ocorrencias: number; relatos: number; status: Status; linhas: string[] }[];
   ultimas: Resposta[];
   totais: { respostas: number; reais: number };
 }

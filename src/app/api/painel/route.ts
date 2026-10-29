@@ -1,6 +1,7 @@
 import { connection } from "next/server";
 import { previsaoAmanha } from "@/lib/clima";
-import { calcularKpis, cenarios, indiceTempoViagem, recomendacoes } from "@/lib/kpis";
+import { calcularKpis, cenarios, indiceTempoViagem, porPlataforma, recomendacoes } from "@/lib/kpis";
+import { confiabilidade } from "@/lib/confiabilidade";
 import { banco, LINHAS } from "@/lib/store";
 
 export async function GET() {
@@ -11,6 +12,8 @@ export async function GET() {
   return Response.json({
     geradoEm: new Date(agora).toISOString(),
     kpis: calcularKpis(b, agora),
+    confiabilidade: confiabilidade(b, agora),
+    plataformas: porPlataforma(b, agora),
     tempoViagem: indiceTempoViagem(b, agora),
     cenarios: LINHAS.map((l) => ({ linha: l, cenarios: cenarios(b, l) })),
     previsao: { fonte: prev.fonte, periodos: prev.periodos, recomendacoes: recomendacoes(b, prev.periodos, amanha) },

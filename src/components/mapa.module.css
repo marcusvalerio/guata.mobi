@@ -1,0 +1,14 @@
+.wrap { display: grid; gap: 10px; }
+.barra { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; }
+.legenda { display: inline-flex; gap: 6px; align-items: center; font-size: 12px; color: var(--muted); }
+.legenda i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-left: 8px; }
+.mapa { height: 420px; border-radius: var(--r); border: 1px solid var(--line); overflow: hidden; z-index: 0; filter: grayscale(.15); }
+.nota { font-size: 12px; color: var(--muted); }
+.plat {
+  width: 44px; height: 44px; border-radius: 50%; background: var(--c); color: #f3f4f5; display: grid; place-content: center; text-align: center;
+  border: 3px solid #f3f4f5; box-shadow: 0 0 0 1px #100c08, 0 4px 12px rgb(16 12 8 / .25); font-family: var(--font-mono); line-height: 1;
+}
+.plat b { font-size: 15px; }
+.plat span { font-size: 9px; opacity: .85; margin-top: 2px; }
+.rotulo { background: transparent !important; border: 0 !important; box-shadow: none !important; font-family: var(--font-ui); font-weight: 600; font-size: 12px; color: #100c08; }
+.rotulo::before { display: none; }

@@ -115,6 +115,19 @@ export function calcularKpis(b: Banco, agora = Date.now()): Kpi[] {
   ];
 }
 
+/** Situação de cada plataforma nas últimas 3h (lotação) e 7 dias (ocorrências), para o mapa. */
+export function porPlataforma(b: Banco, agora = Date.now()) {
+  const r3 = desde(b.respostas, 3 * H, agora);
+  const o7 = desde(b.ocorrencias, 7 * 24 * H, agora);
+  return PLATAFORMAS.map((p) => {
+    const rs = r3.filter((r) => r.plataforma === p);
+    const ocupacao = media(rs.map((r) => ((r.lotacaoPlataforma - 1) / 4) * 100));
+    const ocorrencias = o7.filter((o) => o.local === `Plataforma ${p}`).length;
+    const status: Status = faixa(ocupacao, 55, 75) === "critico" || ocorrencias >= 6 ? "critico" : faixa(ocupacao, 55, 75);
+    return { plataforma: p, ocupacao: ocupacao && Math.round(ocupacao), ocorrencias, relatos: rs.length, status, linhas: LINHAS.filter((l) => l.plataforma === p).map((l) => l.codigo) };
+  });
+}
+
 /* ---------- Tempo de viagem: estimativa por condição ---------- */
 
 export interface Condicao { clima: Clima; fds: boolean; periodo: Periodo }
