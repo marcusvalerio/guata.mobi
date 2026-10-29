@@ -1,34 +1,41 @@
-.cena { position: absolute; left: 0; right: 0; bottom: 0; height: 58%; pointer-events: none; }
-@media (max-width: 720px) { .cena { height: 46%; } }
+.cena { position: absolute; inset: 0; pointer-events: none; }
 .svg { width: 100%; height: 100%; display: block; }
 
-.desenho {
-  fill: none; stroke: #dbe0e1; stroke-width: 1.6; stroke-linecap: round; opacity: .55;
-  stroke-dasharray: 1; stroke-dashoffset: 1;
-  animation: desenhar 1.8s cubic-bezier(.6, 0, .2, 1) forwards;
-}
-.rampaBase { stroke: #95122c; stroke-width: 5; opacity: .9; animation-duration: 2.6s; }
-@keyframes desenhar { to { stroke-dashoffset: 0; } }
+.aurora { mix-blend-mode: screen; opacity: 0; animation: acender 3s ease forwards; }
+@keyframes acender { to { opacity: 1; } }
 
-.via { fill: none; stroke: #dbe0e1; stroke-width: 1; opacity: .08; }
+.aurora path { transform-box: fill-box; transform-origin: center; }
+.a { opacity: .5; animation: ondaA 16s ease-in-out infinite alternate; }
+.b { opacity: .45; animation: ondaB 21s ease-in-out infinite alternate; }
+.c { opacity: .55; animation: ondaC 26s ease-in-out infinite alternate; }
+.d { opacity: .16; animation: ondaA 19s ease-in-out infinite alternate-reverse; }
+@keyframes ondaA { from { transform: translate(-60px, 10px) scaleY(.85); } to { transform: translate(70px, -30px) scaleY(1.25); } }
+@keyframes ondaB { from { transform: translate(50px, -10px) scaleY(1.2); } to { transform: translate(-80px, 25px) scaleY(.8); } }
+@keyframes ondaC { from { transform: translate(-40px, 20px) scaleY(.9); } to { transform: translate(60px, -20px) scaleY(1.3); } }
 
-.luz {
-  fill: none; stroke-linecap: round; stroke-dasharray: 9 91;
-  animation-name: correr; animation-timing-function: linear; animation-iteration-count: infinite;
-}
+.mac path { fill: none; stroke: #f3f4f5; stroke-width: 1.2; opacity: .1; }
+
+.luz { fill: none; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 7 93; opacity: .8; mix-blend-mode: screen;
+  animation-name: correr; animation-timing-function: linear; animation-iteration-count: infinite; }
 @keyframes correr { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
-.farol { stroke: #f3f4f5; stroke-width: 2.4; }
-.lanterna { stroke: #ff9408; stroke-width: 2.6; }
-.vinho { stroke: #ca3f16; stroke-width: 2.2; }
-.subida {
-  stroke: #ff9408; stroke-width: 3; stroke-dasharray: 4 96;
-  animation-duration: 6s; animation-delay: 2.8s;
-}
 
-.reflexo { animation: pulso 6s ease-in-out infinite; }
-@keyframes pulso { 50% { opacity: .6; } }
+/* Cortina: raios verticais escurecem a aurora em faixas, como no céu polar. */
+.raios {
+  position: absolute; inset: 0; mix-blend-mode: multiply; opacity: .55; filter: blur(6px);
+  background: repeating-linear-gradient(90deg, #100c08 0 3px, transparent 3px 22px, #100c08 22px 24px, transparent 24px 61px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 20%, #000 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 20%, #000 60%, transparent 100%);
+  animation: cortina 30s linear infinite;
+}
+@keyframes cortina { to { background-position: 610px 0; } }
+
+/* Grão leve para a aurora não parecer degradê de computador. */
+.grao {
+  position: absolute; inset: 0; opacity: .08; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .desenho { stroke-dashoffset: 0; }
+  .aurora { opacity: 1; }
   .luz { opacity: 0; }
 }
