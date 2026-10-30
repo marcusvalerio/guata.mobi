@@ -49,7 +49,8 @@ export default function Page() {
                 <img src={`/api/qrcode?p=${p}`} alt={`QR Code da plataforma ${p}`} width={160} height={160} />
                 <figcaption>
                   <strong>Plataforma {p}</strong>
-                  <a href={`/r?p=${p}`} target="_blank" className={s.muted}>/r?p={p}</a>
+                  <a href={`/r?p=${p}`} target="_blank" className={s.muted}>Pesquisa: /r?p={p}</a>
+                  <a href={`/telao?p=${p}`} target="_blank" className={s.muted}>Telão da plataforma {p}</a>
                 </figcaption>
               </figure>
             ))}
