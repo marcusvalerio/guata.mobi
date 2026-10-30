@@ -6,7 +6,7 @@ const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Guatá Mobi",
+  title: "PIRN · Painel Inteligente Rodoviário de Niterói",
   description: "Painel inteligente de indicadores operacionais para terminais rodoviários.",
 };
 

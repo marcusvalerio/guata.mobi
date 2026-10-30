@@ -15,9 +15,18 @@ export interface Nota {
   referencias: string[];
 }
 
-const SORIANO = "SORIANO-GONZALEZ, R. et al. Analyzing key performance indicators for mobility logistics in smart and sustainable cities: a case study centered on Barcelona. Logistics, v. 7, n. 4, 2023.";
-
-const ARTIGO = "GAZE, R. et al. Ciência de Dados e Indicadores Operacionais: painel inteligente para o Terminal Rodoviário de Niterói (RJ). 23ª RDT, 2026. Tabela 1.";
+/* Referências conforme a lista do artigo (Gaze et al., 2026), com todos os autores do estudo. */
+const ARTIGO = "GAZE, Roberta; SOUZA, Maicon Jose de Paula Coelho de; RIBEIRO, Leonardo da Silva; OLIVEIRA, Cintia Machado de; RIBEIRO, Glaydston Mattos. Ciência de Dados e Indicadores Operacionais: painel inteligente para o Terminal Rodoviário de Niterói (RJ). 23º RDT, 2026. Tabela 1.";
+const LEI_MOBILIDADE = "BRASIL. Lei nº 12.587, de 3 de janeiro de 2012. Institui as diretrizes da Política Nacional de Mobilidade Urbana. Brasília, DF: Presidência da República, 2012.";
+const LGPD = "BRASIL. Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD). Brasília, DF: Presidência da República, 2018.";
+const CHARALAMPIDOU = "CHARALAMPIDOU, Georgia; KOPSACHEILIS, Aristomenis; POLITIS, Ioannis. Assessing the operation of a multimodal hub: a traffic impact microsimulation analysis. Infrastructures, v. 9, n. 3, art. 55, 2024. DOI: 10.3390/infrastructures9030055.";
+const CONTERNO = "CONTERNO, Rayana Carolina; DITZEL SANTOS, Gilson. Mobilidade urbana em cidades inteligentes: lacunas, tendências e oportunidades. Revista Brasileira de Geografia Física, Recife, v. 18, n. 2, p. 1475 a 1497, 2025.";
+const DARONCHO = "DARONCHO, Celio; MARTINEZ, Pedro Jose Perez. Uma análise sobre os conceitos inerentes às cidades inteligentes: do transporte e mobilidade à cidade de 15 minutos. LOGS: Logística e Operações Globais Sustentáveis, v. 5, n. 1, p. 88 a 117, 2023.";
+const FIORE = "FIORE, Sandro et al. An integrated big and fast data analytics platform for smart urban transportation management. IEEE Access, v. 7, p. 117652 a 117677, 2019. DOI: 10.1109/ACCESS.2019.2936941.";
+const GEMEO = "NITERÓI. Prefeitura Municipal de Niterói. Gêmeo Digital Niterói. 2026a. Disponível em: https://gemeo.niteroi.rj.gov.br/.";
+const MOBNIT = "NITERÓI. Prefeitura Municipal de Niterói. MOBNIT: itinerários. 2026b. Disponível em: https://mobnit.niteroi.rj.gov.br/itinerarios.";
+const NITTRANS = "NITERÓI. Prefeitura Municipal de Niterói. NitTrans: estatísticas e estudos. 2026c. Disponível em: https://nittrans.niteroi.rj.gov.br/estatisticas-e-estudos/.";
+const SORIANO = "SORIANO-GONZALEZ, Raquel et al. Analyzing key performance indicators for mobility logistics in smart and sustainable cities: a case study centered on Barcelona. Logistics, v. 7, n. 4, art. 75, 2023. DOI: 10.3390/logistics7040075.";
 
 export const NOTAS: Record<string, Nota> = {
   Demanda: {
@@ -38,7 +47,7 @@ export const NOTAS: Record<string, Nota> = {
       "Sem bilhetagem, não há separação por linha nem por sentido.",
     ],
     camadas: "Camada (i) coleta: contagem de passageiros. Camada (iii) processamento: projeção horária e detecção de pico.",
-    referencias: [ARTIGO, SORIANO, "CHARALAMPIDOU, G.; KOPSACHEILIS, A.; POLITIS, I. Assessing the operation of a multimodal hub. Infrastructures, 2024."],
+    referencias: [ARTIGO, SORIANO, CHARALAMPIDOU],
   },
   Operação: {
     dimensao: "Operação",
@@ -57,7 +66,7 @@ export const NOTAS: Record<string, Nota> = {
       "A comparação com o programado depende do GTFS do MOBNIT ou dos dados de GPS da frota.",
     ],
     camadas: "Camada (i) coleta: pesquisa de satisfação. Camada (iii): agregação por janela de 24 horas.",
-    referencias: [ARTIGO, SORIANO, "FIORE, S. et al. An integrated big and fast data analytics platform for smart urban transportation management. IEEE Access, 2019."],
+    referencias: [ARTIGO, SORIANO, FIORE, MOBNIT],
   },
   Infraestrutura: {
     dimensao: "Infraestrutura",
@@ -76,7 +85,7 @@ export const NOTAS: Record<string, Nota> = {
       "A taxa física exige registro de chegada e saída dos veículos por baia.",
     ],
     camadas: "Camada (i) coleta: pesquisa de satisfação por plataforma. Camada (iv) visualização: mapa por plataforma.",
-    referencias: [ARTIGO, "CHARALAMPIDOU, G.; KOPSACHEILIS, A.; POLITIS, I. Assessing the operation of a multimodal hub. Infrastructures, 2024."],
+    referencias: [ARTIGO, CHARALAMPIDOU, GEMEO],
   },
   Acessibilidade: {
     dimensao: "Acessibilidade",
@@ -94,7 +103,7 @@ export const NOTAS: Record<string, Nota> = {
       "Não mede acessibilidade física (rampas, elevadores, piso tátil), que exige vistoria.",
     ],
     camadas: "Camada (i) coleta: pesquisa de satisfação. Camada (iii): agregação por modal.",
-    referencias: [ARTIGO, "BRASIL. Lei nº 12.587, de 3 de janeiro de 2012. Política Nacional de Mobilidade Urbana."],
+    referencias: [ARTIGO, LEI_MOBILIDADE, CONTERNO, DARONCHO],
   },
   Satisfação: {
     dimensao: "Satisfação",
@@ -113,7 +122,7 @@ export const NOTAS: Record<string, Nota> = {
       "Notas extremas tendem a ser mais frequentes do que na população de usuários.",
     ],
     camadas: "Camada (i) coleta: pesquisa de satisfação (escore Likert). Camada (v) governança: anonimização conforme a LGPD.",
-    referencias: [ARTIGO, SORIANO, "BRASIL. Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD)."],
+    referencias: [ARTIGO, SORIANO, LGPD],
   },
   Segurança: {
     dimensao: "Segurança",
@@ -132,7 +141,7 @@ export const NOTAS: Record<string, Nota> = {
       "Não integra boletins policiais nem registros da guarda municipal.",
     ],
     camadas: "Camada (i) coleta: registros de ocorrências. Camada (iv): concentração por local no mapa.",
-    referencias: [ARTIGO],
+    referencias: [ARTIGO, FIORE, NITTRANS],
   },
 };
 
@@ -148,6 +157,7 @@ export const NOTA_CONFIABILIDADE = {
     { nome: "Frescor (15%)", texto: "Tempo desde o último relato real. Vale 100% até 15 minutos e cai pela metade a cada hora depois disso. Um painel ao vivo com dados de ontem não está ao vivo." },
   ],
   leitura: "Alta a partir de 75%, média de 45% a 74%, baixa abaixo de 45%. Os pesos privilegiam origem e volume porque são as duas condições sem as quais nenhum indicador tem significado estatístico; cobertura e frescor qualificam o resultado.",
+  referencias: [ARTIGO, LGPD, FIORE, SORIANO],
   limitacoes: [
     "É um índice de qualidade da base, não um intervalo de confiança estatístico de cada indicador.",
     "Os pesos e a meta de volume são escolhas de projeto e devem ser validados com os gestores, como prevê a etapa de entrevistas do cronograma.",

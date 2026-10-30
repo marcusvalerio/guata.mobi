@@ -1,7 +1,7 @@
 import { Shell } from "@/components/Shell";
 import { Central } from "./Central";
 
-export const metadata = { title: "Central · Guatá" };
+export const metadata = { title: "Central · PIRN" };
 
 export default function Page() {
   return (

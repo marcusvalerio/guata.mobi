@@ -1,6 +1,6 @@
 /**
- * Símbolo Guatá: o MAC de Niterói desmontado em três traços — o prato, a haste
- * e a rampa que leva até ele. A rampa, em laranja, é o "caminhar" do nome (tupi).
+ * Símbolo do PIRN: o MAC de Niterói desmontado em três traços (o prato, a haste
+ * e a rampa que leva até ele). A rampa, em laranja, é o caminho do passageiro.
  */
 export function Marca({ size = 28, fundo = false }: { size?: number; fundo?: boolean }) {
   return (
@@ -18,11 +18,14 @@ export function Marca({ size = 28, fundo = false }: { size?: number; fundo?: boo
   );
 }
 
-export function Logo({ size = 22 }: { size?: number }) {
+export function Logo({ size = 22, detalhe = true }: { size?: number; detalhe?: boolean }) {
   return (
     <span style={{ display: "inline-flex", alignItems: "center", gap: size * 0.4, fontFamily: "var(--font-ui)", fontWeight: 600, letterSpacing: "-0.03em" }}>
       <Marca size={size * 1.35} />
-      <span style={{ fontSize: size * 0.9 }}>guatá<span style={{ color: "var(--muted)", fontWeight: 400 }}>.mobi</span></span>
+      <span style={{ display: "grid", lineHeight: 1 }}>
+        <span style={{ fontSize: size * 0.95, letterSpacing: "0.02em" }}>PIRN</span>
+        {detalhe && <span style={{ fontSize: size * 0.42, color: "var(--muted)", fontWeight: 400, letterSpacing: "0", marginTop: 3 }}>Painel Inteligente Rodoviário de Niterói</span>}
+      </span>
     </span>
   );
 }

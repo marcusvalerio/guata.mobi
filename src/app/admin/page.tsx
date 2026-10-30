@@ -8,7 +8,7 @@ import { Linhas } from "./Linhas";
 import s from "../painel/painel.module.css";
 import a from "./admin.module.css";
 
-export const metadata = { title: "Administração · Guatá" };
+export const metadata = { title: "Administração · PIRN" };
 
 const PERMISSOES = [
   ["Ver painel das 6 dimensões", true, true, true, false],
