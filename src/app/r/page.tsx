@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { banco } from "@/lib/store";
 import { Pesquisa } from "./Pesquisa";
 
-export const metadata = { title: "Avalie sua viagem · Guatá" };
+export const metadata = { title: "Avalie sua viagem · PIRN" };
 
 async function ComLinhas({ searchParams }: { searchParams: PageProps<"/r">["searchParams"] }) {
   await connection();

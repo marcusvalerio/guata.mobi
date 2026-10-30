@@ -32,7 +32,7 @@ export const NOTAS_WAZE: Record<string, { titulo: string; texto: string[] }> = {
   previsao: {
     titulo: "Previsão de trânsito para amanhã",
     texto: [
-      "A cada 10 minutos o Guatá grava o atraso de trânsito no traçado de cada linha (Waze sobre o traçado do MOBNIT) e se estava chovendo no terminal (Open-Meteo). Esse histórico é próprio: a prefeitura não publica o histórico do Waze.",
+      "A cada 10 minutos o PIRN grava o atraso de trânsito no traçado de cada linha (Waze sobre o traçado do MOBNIT) e se estava chovendo no terminal (Open-Meteo). Esse histórico é próprio: a prefeitura não publica o histórico do Waze.",
       "Para amanhã, cada período (madrugada, manhã, tarde, noite) usa a mediana das coletas do mesmo tipo de dia (útil ou fim de semana) e da mesma condição de chuva prevista. Com menos de 6 coletas nessa condição, usa todas as coletas do período.",
       "A mediana foi escolhida porque é robusta a dias atípicos, como acidentes ou eventos.",
       "A estimativa só aparece com pelo menos 6 coletas no período. Com poucos dias de histórico ela ainda é frágil; ganha precisão a cada semana.",

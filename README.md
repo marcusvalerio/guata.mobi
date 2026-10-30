@@ -1,4 +1,4 @@
-# guatá.mobi
+# PIRN · Painel Inteligente Rodoviário de Niterói
 
 Painel inteligente de indicadores operacionais para o Terminal Rodoviário Presidente João Goulart (Niterói, RJ).
 Protótipo da pesquisa *Ciência de Dados e Indicadores Operacionais* (PET/COPPE/UFRJ · CEFET/RJ, 23º RDT).

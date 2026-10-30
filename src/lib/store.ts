@@ -12,7 +12,7 @@ export const PLATAFORMAS = ["A", "B", "C", "D", "E"];
 export const FONTE_LINHAS = { fonte: SIGEO.fonte, coletadoEm: SIGEO.coletadoEm };
 
 export const USUARIOS_DEMO: Usuario[] = [
-  { id: "u1", nome: "Equipe Guatá", email: "central@guata.mobi", papel: "central" },
+  { id: "u1", nome: "Equipe PIRN", email: "central@pirn.exemplo", papel: "central" },
   { id: "u2", nome: "Administração do Terminal", email: "admin@terminal.exemplo", papel: "admin" },
   { id: "u3", nome: "Gestão Operacional", email: "gestor@terminal.exemplo", papel: "gestor" },
   { id: "u4", nome: "Operador de Plataforma", email: "operador@terminal.exemplo", papel: "operador" },

@@ -2,7 +2,7 @@ import { Shell } from "@/components/Shell";
 import { PLATAFORMAS } from "@/lib/store";
 import { Operacao } from "./Operacao";
 
-export const metadata = { title: "Operação · Guatá" };
+export const metadata = { title: "Operação · PIRN" };
 
 export default function Page() {
   return (

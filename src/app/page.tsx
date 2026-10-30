@@ -61,7 +61,7 @@ export default function Home() {
           </h1>
           <div className={s.heroRow}>
             <p className={s.lead}>
-              O Guatá transforma relatos de passageiros, registros da operação e dados da cidade em seis
+              O PIRN transforma relatos de passageiros, registros da operação e dados da cidade em seis
               indicadores ao vivo e numa previsão de tempo de viagem para o dia seguinte. A gestão ajusta
               horários, intervalos e frota antes da fila se formar, não depois.
             </p>
@@ -100,7 +100,7 @@ export default function Home() {
             <p>
               A pesquisa em andamento no PET/COPPE/UFRJ propõe um painel inteligente fundamentado em
               Ciência de Dados e indicadores operacionais para apoiar o planejamento da mobilidade.
-              O Guatá é o protótipo dessa proposta.
+              O PIRN é o protótipo dessa proposta.
             </p>
             <ul className={s.facts}>
               <li><span className="num">6</span> dimensões de análise</li>
@@ -197,7 +197,7 @@ export default function Home() {
         <div className="wrap">
           <div className={s.secHead}>
             <p className="eyebrow">Próximas paradas</p>
-            <h2 className={s.h2}>O que mais entra no Guatá.</h2>
+            <h2 className={s.h2}>O que mais entra no PIRN.</h2>
           </div>
           <ol className={s.rota}>
             {PROXIMOS.map(([t, d], k) => (

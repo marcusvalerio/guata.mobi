@@ -255,6 +255,7 @@ export function Painel() {
         <Secao titulo="Como é composta"><ul>{NOTA_CONFIABILIDADE.fatores.map((f) => <li key={f.nome}><strong>{f.nome}.</strong> {f.texto}</li>)}</ul></Secao>
         <Secao titulo="Leitura"><p>{NOTA_CONFIABILIDADE.leitura}</p></Secao>
         <Secao titulo="Limitações"><ul>{NOTA_CONFIABILIDADE.limitacoes.map((t) => <li key={t}>{t}</li>)}</ul></Secao>
+        <Secao titulo="Referências"><ul>{NOTA_CONFIABILIDADE.referencias.map((t) => <li key={t}><small>{t}</small></li>)}</ul></Secao>
       </Detalhe>
     </div>
   );
